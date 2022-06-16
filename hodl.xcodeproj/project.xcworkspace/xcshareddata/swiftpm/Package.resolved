@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Charts",
+        "repositoryURL": "https://github.com/danielgindi/Charts.git",
+        "state": {
+          "branch": null,
+          "revision": "66546404a6739173b8e436ab6bc1f2897cd08594",
+          "version": "3.6.0"
+        }
+      },
+      {
+        "package": "LiteDB",
+        "repositoryURL": "https://github.com/ZignalNET/LiteDB",
+        "state": {
+          "branch": "1.0.40",
+          "revision": "5db601adba11c6a94752378e494f9fb8fd8030fe",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
