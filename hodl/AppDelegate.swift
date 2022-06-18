@@ -9,7 +9,7 @@ import UIKit
 import LiteDB
 
 let HodlDb    = Database.sharedInstance("hodl.sqlite3")
-let HodlTimer = Timer("FetchBalance", 15, onTimerExchangeCallback)
+let HodlTimer = Timer("HODL", 60, onTimerExchangeCallback)
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,8 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         initModels()
         startApp(HomeViewController())
+        fetchExchangeData(globalLocalCurrency)
         HodlTimer.resume()
-        Balances.singleInstance.list()
         return true
     }
 

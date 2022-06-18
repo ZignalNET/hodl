@@ -7,6 +7,8 @@
 
 import Foundation
 
+typealias EndPoint = (String,EndPoints.Method,String)
+
 enum EndPoints : String {
     case LUNO
     case VALR
@@ -40,9 +42,21 @@ enum EndPoints : String {
         }
     }
     
-    var balances: (String,Method,String) {
+    var balances: EndPoint {
         switch self {
             case .LUNO:                 return ("\(self.baseurl)/balance",.GET,"/balance")
+            case .VALR:                 return ("\(self.baseurl)/v1/account/balances",.GET,"/v1/account/balances")
+            case .BINANCE:              return ("\(self.baseurl)/api/v3/account", .GET, "/api/v3/account")
+            case .COINBASE:             return ("\(self.baseurl)/v2/accounts", .GET, "/v2/accounts")
+            case .CONVERSION_MULTI:     return ("",.GET,"")
+            case .CONVERSION_SINGLE:    return ("",.GET,"")
+            case .UNDEFINED:            return ("",.NONE,"")
+        }
+    }
+    
+    var orders: EndPoint {
+        switch self {
+            case .LUNO:                 return ("\(self.baseurl)/listorders",.GET,"/balance")
             case .VALR:                 return ("\(self.baseurl)/v1/account/balances",.GET,"/v1/account/balances")
             case .BINANCE:              return ("\(self.baseurl)/api/v3/account", .GET, "/api/v3/account")
             case .COINBASE:             return ("\(self.baseurl)/v2/accounts", .GET, "/v2/accounts")

@@ -76,10 +76,12 @@ class GenericTableView<T, Cell: UITableViewCell>: UITableView, UITableViewDataSo
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //tableView.deselectRow(at: indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
         let cell: Cell = tableView.dequeueReusableCell(forIndexPath: indexPath)
+        resetChecks()
         _ = self.callback?(.SelectCell,indexPath, cell, getModelAt(indexPath))
     }
+    
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         var actions: [UIContextualAction] = []
@@ -143,6 +145,17 @@ class GenericTableView<T, Cell: UITableViewCell>: UITableView, UITableViewDataSo
           }
       }.flatMap { $0 }
     }
+    
+    public func resetChecks() {
+        for i in 0..<numberOfSections {
+            for j in 0..<numberOfRows(inSection: i) {
+                if let cell = cellForRow(at: IndexPath(row: j, section: i)) {
+                    cell.accessoryType = .none
+                }
+            }
+        }
+    }
+
 
 }
 

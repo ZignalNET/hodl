@@ -61,6 +61,7 @@ func initModels() {
 
 
 func fetchExchangeData(_ localFiat: String ) {
+    guard isConnectedToInternet() else { return }
     //TODO: Full rewrite of this function is a MUST; what if I have 1000 exchanges ????
     DispatchQueue.global(qos: .background).async {
         let luno    = Luno.singleInstance.fetchBalances(fiat: localFiat)
@@ -115,7 +116,7 @@ func fetchExchangeData(_ localFiat: String ) {
 
 
 func onTimerExchangeCallback(_ timer: Timer ) {
-    if isConnectedToInternet() { fetchExchangeData(globalLocalCurrency) }
+    fetchExchangeData(globalLocalCurrency)
 }
 
 
@@ -128,18 +129,12 @@ func isConnectedToInternet() -> Bool {
             $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
                 SCNetworkReachabilityCreateWithAddress(nil, $0)
             }
-        }) else {
-            return false
-    }
+        }) else { return false }
 
     var flags: SCNetworkReachabilityFlags = []
-    if !SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) {
-        return false
-    }
-
+    if !SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) { return false }
     let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0
     let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
-
     return (isReachable && !needsConnection) ? true : false
 }
 

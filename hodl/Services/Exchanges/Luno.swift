@@ -18,6 +18,13 @@ class Luno: Base {
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
     }
     
+    override func validateResponse(_ response: URLResponse? = nil ) -> Bool {
+        guard let r = response as? HTTPURLResponse else { return false }
+        if r.statusCode == 200 { return true }
+        //TODO: Check for 429, backoff!!!
+        return false
+    }
+    
     override func fetchBalances(fiat: String) -> (Float,AssetsBalances?,Exchanges?) {
         var total: Float = 0.0
         var balances: AssetsBalances?
@@ -37,6 +44,24 @@ class Luno: Base {
             semaphore.wait()
         }
         return (total, balances,Exchanges.singleInstance.find(self.name))
+    }
+    
+    override func fetchPendingOrders() {
+        if hasApiKeys() != nil {
+            let urlRequest = buildURL(self.urls.orders,["state":"PENDING"])
+            let semaphore = DispatchSemaphore(value: 0)
+            queueRequest(urlRequest) {
+                (data: ResponseData.Luno.PendingOrders? , error: Error?) in
+                if let r = data {
+                    print(r)
+                }
+                if let error = error {
+                    print(error)
+                }
+                semaphore.signal()
+            }
+            semaphore.wait()
+        }
     }
 }
 
@@ -111,7 +136,7 @@ extension ResponseData.Luno  {
 
     class func fetchLastTradedPrice() -> Float {
         var rate: Float = 0.0
-        if  let data = Base.synchronousQuery(address: "https://api.luno.com/api/1/ticker?pair=XBTZAR"),
+        if  let data = BaseInstance.synchronousQuery(address: "https://api.luno.com/api/1/ticker?pair=XBTZAR"),
             let a = data["last_trade"] {
             rate = Float(a as! String) ?? rate
         }
@@ -119,3 +144,29 @@ extension ResponseData.Luno  {
     }
     
 }
+
+
+extension ResponseData.Luno  {
+    public struct PendingOrders: Codable {
+        public var orders: [PendingOrder]
+    }
+    public struct PendingOrder: Codable {
+        public var base: String
+        public var completed_timestamp: Int64
+        public var counter: String
+        public var creation_timestamp: Int64
+        public var expiration_timestamp: Int64
+        
+        public var fee_base: String
+        public var fee_counter: String
+        public var limit_price: String
+        public var limit_volume: String
+        public var order_id: String
+        
+        public var pair: String
+        public var state: String
+        public var type: String
+        
+    }
+}
+

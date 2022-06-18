@@ -30,17 +30,17 @@ class Balances: Table {
 }
 
 extension Balances {
-    func add(_ eid: Int32, _ aid: Int32, _ currency: String, _ total: String, _ value : String, _ formatter: String = Balances.dateFormatter.dateFormat) {
+    func add(_ eid: Int32, _ aid: Int32, _ currency: String, _ total: String, _ value : String) {
         let balance = self
         balance["eid"] = eid
         balance["aid"] = aid
         balance["currency"] = currency
         balance["total"] = total
         balance["value"] = value
-        Balances.dateFormatter.dateFormat = formatter
+        Balances.dateFormatter.dateFormat = "yyyyMMddHH"
         let period = Balances.dateFormatter.string(from: Date())
         balance["period"] = period
-        
+
         do {
             if let b = find(eid, aid, currency, period) {
                 balance["id"] = b["id"]!
@@ -69,9 +69,18 @@ extension Balances {
     }
     
     func list() {
+        //Monthly data chart; by date
+        let today = Date()
+        let daysInMonth = today.daysInMonth()
+        let formatter = DateFormatter()
+        formatter.locale = Locale.current
+        formatter.dateFormat = "yyyyMMdd01"
+        let from = formatter.string(from: today)
+        formatter.dateFormat = "yyyyMMdd" + "\(daysInMonth)"
+        let to = formatter.string(from: today)
         do {
-            let sql = "select b_period as period, sum(cast(b_value as decimal)) as total from b_balances group by b_period"
-            if let rows: [Bal] = try self.getDB()?.query(sql, nil , nil ) {
+            let sql = "select b_period as period, sum(cast(b_value as decimal)) as total from b_balances where b_period BETWEEN ? AND ? group by b_period"
+            if let rows: [Bal] = try self.getDB()?.query(sql, [from,to] , nil ) {
                 for row in rows {
                     print(row.period, row.total)
                 }
@@ -83,3 +92,6 @@ extension Balances {
         }
     }
 }
+
+
+

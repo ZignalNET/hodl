@@ -13,9 +13,12 @@ typealias WebServiceCallbackValues                 = (Data?, Error?)
 typealias AssetsBalances                           = [String:(Float,Float)]
 
 public enum WebServiceError: Error {
+    case invalidResponse(URLResponse)
     case invalidResponseCode(Int)
     case invalidResponseData(Data)
 }
+
+let BaseInstance = Base("", .none)
 
 class Base {
     private(set) var name: String = ""
@@ -44,7 +47,7 @@ class Base {
         return nonce
     }
     
-    private func fetchURL(_ endpoint: (String,EndPoints.Method,String) ) -> ((String,String),Bool,EndPoints.Method) {
+    private func fetchURL(_ endpoint: EndPoint ) -> ((String,String),Bool,EndPoints.Method) {
         let url    = (endpoint.0,endpoint.2)
         let auth   = self.credentials == Auth.none ? false : true
         let method = endpoint.1
@@ -57,7 +60,7 @@ class Base {
     
     func getJSONDecoder() -> JSONDecoder { return decoder }
     
-    func buildURL( _ endpoint: (String,EndPoints.Method,String) , _ parameters: [String:String] = [:] ) -> URLRequest {
+    func buildURL( _ endpoint: EndPoint , _ parameters: [String:String] = [:] ) -> URLRequest {
         let (url,auth,method) = fetchURL( endpoint )
         var urlRequest = URLRequest(url: URL(string: url.0)!)
         if parameters.count > 0 {
@@ -78,6 +81,11 @@ class Base {
         fatalError("Must be overridden and implemented in derived class ...")
     }
     
+    func validateResponse(_ response: URLResponse?) -> Bool {
+        guard let r = response as? HTTPURLResponse, r.statusCode == 200 else { return false }
+        return true
+    }
+    
     private func printResponseAsText(responseData: Data) {
         let text = NSString(data: responseData, encoding: String.Encoding.utf8.rawValue)
         debugPrint(text!)
@@ -90,23 +98,11 @@ class Base {
                 {
                     (data, response, error) -> Void in
                     // check for any errors
-                    guard error == nil else {
-                        print("error calling URL \(String(describing: requestURL)) ")
-                        completion?(nil,error)
-                        return
-                    }
-                    // make sure we got response data
-                    guard let responseData = data else {
-                        print("Error: did not receive data")
-                        completion?(nil,error)
-                        return
-                    }
-                    
-                    //Call handler if available
-                    let statusCode = response?.value(forKey: "statusCode") as! Int
-                    if statusCode == 200 {
+                    guard error == nil else { completion?(nil,error); return }
+                    if self.validateResponse(response) { //check for 200.. derived class should check for 429 etc ...
+                        // make sure we got response data
+                        guard let responseData = data else { completion?(nil,error); return }
                         do {
-                            //self.printResponseAsText(responseData: responseData)
                             let obj = try self.decoder.decode(T.self, from: responseData)
                             completion?(obj,nil)
                         } catch let err {
@@ -115,7 +111,7 @@ class Base {
                         }
                     }
                     else {
-                        completion?(nil, WebServiceError.invalidResponseCode(statusCode))
+                        completion?(nil, WebServiceError.invalidResponse(response!))
                     }
                 })
             requestTask?.resume()
@@ -131,28 +127,14 @@ class Base {
                 {
                     (data, response, error) -> Void in
                     // check for any errors
-                    guard error == nil else {
-                        print("error calling URL \(String(describing: requestURL)) ")
-                        r = (nil,error)
-                        semaphore.signal()
-                        return
-                    }
-                    // make sure we got response data
-                    guard let responseData = data else {
-                        print("Error: did not receive data")
-                        r = (nil,error)
-                        semaphore.signal()
-                        return
-                    }
-                    
-                    //Call handler if available
-                    let statusCode = response?.value(forKey: "statusCode") as! Int
-                    if statusCode == 200 {
-                        //self.printResponseAsText(responseData: responseData)
+                    guard error == nil else { r = (nil,error);semaphore.signal();return}
+                    if self.validateResponse(response) { //check for 200.. derived class should check for 429 etc ...
+                        // make sure we got response data
+                        guard let responseData = data else {r = (nil,error);return}
                         r = (responseData,nil)
                     }
                     else {
-                        r = (nil, WebServiceError.invalidResponseCode(statusCode))
+                        r = (nil, WebServiceError.invalidResponse(response!))
                     }
                     semaphore.signal()
                 })
@@ -163,22 +145,24 @@ class Base {
     }
     
     
-    static func synchronousQuery(address: String) -> [String: Any]? {
+    func synchronousQuery(address: String) -> [String: Any]? {
         let url = URL(string: address)
         let semaphore = DispatchSemaphore(value: 0)
         
         var jsonData: [String: Any]? = nil
         let task = URLSession.shared.dataTask(with: url!) {(data, response, error) in
-            
-            //Decode data
-            if let responseData = data {
-                do {
-                    jsonData = try responseData.toDictionary()
-                } catch let err {
-                    print(#function, err)
+            guard error == nil else { semaphore.signal();return}
+            if self.validateResponse(response) { //check for 200.. derived class should check for 429 etc ...
+                //Decode data
+                if let responseData = data {
+                    do {
+                        jsonData = try responseData.toDictionary()
+                    } catch let err {
+                        print(#function, err)
+                    }
                 }
             }
-            else if error != nil {
+            else {
                 print("error calling URL \(String(describing: address)) ")
                 print(error!)
             }
@@ -194,13 +178,16 @@ class Base {
         fatalError("Must be overridden and implemented in derived class ...")
     }
     
+    func fetchPendingOrders() {
+        fatalError("Must be overridden and implemented in derived class ...")
+    }
 }
 
 
 extension Base {
     class func convertAssets(_ from: String, _ to: String, _ bMulti: Bool = true ) -> [String: Any]?{
-        if bMulti { return Base.synchronousQuery(address: "\(EndPoints(value: "CONVERSION_MULTI").baseurl)?fsyms=\(from)&tsyms=\(to)") }
-        else { return Base.synchronousQuery(address: "\(EndPoints(value: "CONVERSION_SINGLE").baseurl)?fsym=\(from)&tsyms=\(to)") }
+        if bMulti { return BaseInstance.synchronousQuery(address: "\(EndPoints(value: "CONVERSION_MULTI").baseurl)?fsyms=\(from)&tsyms=\(to)") }
+        else { return BaseInstance.synchronousQuery(address: "\(EndPoints(value: "CONVERSION_SINGLE").baseurl)?fsym=\(from)&tsyms=\(to)") }
     }
 }
 

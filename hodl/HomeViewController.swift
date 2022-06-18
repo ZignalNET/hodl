@@ -11,6 +11,7 @@ class HomeViewController: BaseScrollViewController {
     private var localFiat: String = globalLocalCurrency
     private var chartView: HodlPieChartView?
     private var summaryTableView: GenericTableView<Any, SummaryTableViewCell>!
+    private let orders = BadgeView("4")
     
     private var summaryTableModel: [(String,(Float,AssetsBalances?,Exchanges?))] = fetchDefaultExchangeData() //[("",(0,nil))]
     
@@ -22,11 +23,21 @@ class HomeViewController: BaseScrollViewController {
         createSummaryTable()
         getStackView().addArrangedSubview(chartView!)
         getStackView().addArrangedSubview( UIView(10) )
+        //getStackView().addArrangedSubview(UILabel( "Pending Orders", .left, 16, .medium, .white))
+        //getStackView().addArrangedSubview( UIView(10) )
+        getStackView().addArrangedSubview(pendingOrderView())
+        getStackView().addArrangedSubview( UIView(10) )
         getStackView().addArrangedSubview(createSummaryHeader())
         getStackView().addArrangedSubview( UIView(10) )
         getStackView().addArrangedSubview( summaryTableView )
-        
+        getStackView().addArrangedSubview( UIView(40) )
         registerNotifications()
+        
+        self.navigationItem.rightBarButtonItem  =  UIBarButtonItem(image: UIImage(named: "icon.extended"), style: .plain, target: self, action: #selector(openSettings))
+    }
+    
+    @objc private func openSettings() {
+        self.navigationController?.pushViewController(SettingViewController(), animated: true)
     }
     
     private func registerNotifications() {
@@ -82,6 +93,50 @@ class HomeViewController: BaseScrollViewController {
        
         return v
     }
+    
+    private func pendingOrderView() -> UIView {
+        func createInner() -> UIView {
+            let v = UIView(35)
+            let caption = UILabel( "Total", .left, 14, .medium, .lightGray)
+            v.addSubview(caption)
+            v.addSubview(orders)
+            
+            v.roundCorners(5.0, .defaultLineColor, 0.3)
+            
+            caption.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true
+            caption.leadingAnchor.constraint(equalTo: v.leadingAnchor, constant: 10).isActive = true
+            
+            orders.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true
+            orders.trailingAnchor.constraint(equalTo: v.trailingAnchor, constant: -20).isActive = true
+            return v
+        }
+        
+        let wrapper = UIView(80)
+        let label   = UILabel( "Pending Orders", .left, 16, .medium, .white)
+        let action  = UIImageView("icon.right")
+        let v = createInner()
+        
+        wrapper.addSubview(label)
+        wrapper.addSubview(action)
+        wrapper.addSubview(v)
+        
+        label.topAnchor.constraint(equalTo: wrapper.topAnchor, constant: 5).isActive = true
+        label.leadingAnchor.constraint(equalTo: wrapper.leadingAnchor, constant: 10).isActive = true
+        
+        action.topAnchor.constraint(equalTo: wrapper.topAnchor, constant: 5).isActive = true
+        action.trailingAnchor.constraint(equalTo: wrapper.trailingAnchor, constant: -10).isActive = true
+        
+        v.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10).isActive = true
+        v.leadingAnchor.constraint(equalTo: wrapper.leadingAnchor, constant: 10).isActive = true
+        v.widthAnchor.constraint(equalTo: wrapper.widthAnchor).isActive = true
+        
+        wrapper.addTapGestureRecognizer {
+            self.navigationController?.pushViewController(OrderViewController(), animated: true)
+        }
+        
+        return wrapper
+    }
+
 }
 
 

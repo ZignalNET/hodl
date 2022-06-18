@@ -9,7 +9,7 @@ import UIKit
 import Charts
 
 class HodlPieChartView: PieChartView {
-
+    private let captionLocal   = UILabel( "BTC\(globalLocalCurrency)", .left, 12, .medium, .lightGray)
     private let portfolioText  = UILabel( "Portfolio", .center, 18, .bold, .white)
     private let leftValue      = UILabel( "0.0", .left, 12, .medium, .white)
     private let rightValue     = UILabel( "0.0", .left, 12, .medium, .white)
@@ -119,7 +119,7 @@ class HodlPieChartView: PieChartView {
     
     private func createRightView() -> UIView {
         let v = UIView(60)
-        let caption = UILabel( "BTC\(self.localFiat!)", .left, 12, .medium, .lightGray)
+        let caption = self.captionLocal //UILabel( "BTC\(self.localFiat!)", .left, 12, .medium, .lightGray)
         v.addSubview(caption)
         v.addSubview(rightValue)
         
@@ -133,6 +133,7 @@ class HodlPieChartView: PieChartView {
     
     
     private func registerNotifications() {
+        self.localFiat = globalLocalCurrency
         NotificationCenter.default.addObserver(forName: .refreshExchangeDataTotals, object: nil, queue: nil) { [weak self] (notification) in
             guard let this = self , let localFiat = this.localFiat else { return }
             DispatchQueue.main.async {
@@ -146,6 +147,8 @@ class HodlPieChartView: PieChartView {
                     if p > this.previousTotal { this.totalValue.textColor = .mediumSeaGreenColor}
                     else { this.totalValue.textColor = .defaultAppStrongColor }
                     this.previousTotal   = data["localtotal"]!
+                    
+                    this.captionLocal.text = "BTC\(globalLocalCurrency)"
                 }
                 
                 if let exchanges = notification.object as? [String:Float], let data = this.data {

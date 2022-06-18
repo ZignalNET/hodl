@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		140C4A71285901A700A49865 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A70285901A700A49865 /* Assets.swift */; };
 		140C4A732859BEEC00A49865 /* Balances.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A722859BEEC00A49865 /* Balances.swift */; };
+		140C4A75285B3EE000A49865 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A74285B3EE000A49865 /* Date.swift */; };
+		140C4A77285B6D4300A49865 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A76285B6D4300A49865 /* SettingViewController.swift */; };
+		140C4A79285B6DFB00A49865 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A78285B6DFB00A49865 /* SettingTableViewCell.swift */; };
+		140C4A7B285BA36E00A49865 /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A7A285BA36E00A49865 /* BadgeView.swift */; };
+		140C4A7D285BAB0800A49865 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A7C285BAB0800A49865 /* BaseView.swift */; };
+		140C4A7F285C75D000A49865 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A7E285C75D000A49865 /* OrderViewController.swift */; };
 		14D612342851C6A30082F2E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D612332851C6A30082F2E6 /* AppDelegate.swift */; };
 		14D612382851C6A30082F2E6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D612372851C6A30082F2E6 /* HomeViewController.swift */; };
 		14D6123D2851C6A50082F2E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14D6123C2851C6A50082F2E6 /* Assets.xcassets */; };
@@ -56,6 +62,12 @@
 /* Begin PBXFileReference section */
 		140C4A70285901A700A49865 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		140C4A722859BEEC00A49865 /* Balances.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Balances.swift; sourceTree = "<group>"; };
+		140C4A74285B3EE000A49865 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
+		140C4A76285B6D4300A49865 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		140C4A78285B6DFB00A49865 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
+		140C4A7A285BA36E00A49865 /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
+		140C4A7C285BAB0800A49865 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
+		140C4A7E285C75D000A49865 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
 		14D612302851C6A30082F2E6 /* hodl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hodl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14D612332851C6A30082F2E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		14D612372851C6A30082F2E6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -136,6 +148,8 @@
 				14D612372851C6A30082F2E6 /* HomeViewController.swift */,
 				14D6128E285315BF0082F2E6 /* DetailViewController.swift */,
 				14D612962855EB680082F2E6 /* CredentialViewController.swift */,
+				140C4A76285B6D4300A49865 /* SettingViewController.swift */,
+				140C4A7E285C75D000A49865 /* OrderViewController.swift */,
 				14D6127C2851E3010082F2E6 /* Model */,
 				14D612712851D6850082F2E6 /* Views */,
 				14D6125B2851CAE50082F2E6 /* Services */,
@@ -168,6 +182,7 @@
 				14D6126E2851CBC80082F2E6 /* Data.swift */,
 				14D6126D2851CBC80082F2E6 /* URL.swift */,
 				14D6126B2851CB520082F2E6 /* String.swift */,
+				140C4A74285B3EE000A49865 /* Date.swift */,
 				14D612532851C91A0082F2E6 /* UILabel.swift */,
 				14D612512851C87D0082F2E6 /* UIViewController.swift */,
 				14D6124F2851C85E0082F2E6 /* UIView.swift */,
@@ -208,7 +223,9 @@
 			isa = PBXGroup;
 			children = (
 				14D6127D2851EB040082F2E6 /* TableViews */,
+				140C4A7C285BAB0800A49865 /* BaseView.swift */,
 				14D612722851D6A40082F2E6 /* HodlPieChartView.swift */,
+				140C4A7A285BA36E00A49865 /* BadgeView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -231,6 +248,7 @@
 				14D6127F2851EB270082F2E6 /* GenericTableView.swift */,
 				14D6128A2851EDF60082F2E6 /* SummaryTableViewCell.swift */,
 				14D6129028531C1C0082F2E6 /* DetailTableViewCell.swift */,
+				140C4A78285B6DFB00A49865 /* SettingTableViewCell.swift */,
 			);
 			path = TableViews;
 			sourceTree = "<group>";
@@ -313,11 +331,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				140C4A7B285BA36E00A49865 /* BadgeView.swift in Sources */,
 				14D612522851C87D0082F2E6 /* UIViewController.swift in Sources */,
 				14D6126A2851CB0F0082F2E6 /* Binance.swift in Sources */,
 				14D6124B2851C7A70082F2E6 /* BaseNavigationController.swift in Sources */,
 				14D6124A2851C7A70082F2E6 /* BaseScrollViewController.swift in Sources */,
 				14D61293285360590082F2E6 /* KeyChainService.swift in Sources */,
+				140C4A77285B6D4300A49865 /* SettingViewController.swift in Sources */,
 				14D612802851EB270082F2E6 /* GenericTableSwipeMenuAction.swift in Sources */,
 				14D612892851ED6F0082F2E6 /* GenericTableViewCell.swift in Sources */,
 				14D612972855EB680082F2E6 /* CredentialViewController.swift in Sources */,
@@ -326,6 +346,7 @@
 				14D6128F285315BF0082F2E6 /* DetailViewController.swift in Sources */,
 				14D612862851EC560082F2E6 /* UITableView.swift in Sources */,
 				14D612812851EB270082F2E6 /* GenericTableView.swift in Sources */,
+				140C4A75285B3EE000A49865 /* Date.swift in Sources */,
 				14D612992856EFF50082F2E6 /* UIAlertController.swift in Sources */,
 				14D612832851EB9B0082F2E6 /* Reusable.swift in Sources */,
 				14D612382851C6A30082F2E6 /* HomeViewController.swift in Sources */,
@@ -344,13 +365,16 @@
 				14D612652851CB0F0082F2E6 /* EndPoints.swift in Sources */,
 				14D61295285505F10082F2E6 /* ApiKey.swift in Sources */,
 				14D612732851D6A40082F2E6 /* HodlPieChartView.swift in Sources */,
+				140C4A79285B6DFB00A49865 /* SettingTableViewCell.swift in Sources */,
 				14D612542851C91A0082F2E6 /* UILabel.swift in Sources */,
 				14D6124E2851C82E0082F2E6 /* UIColor.swift in Sources */,
 				14D612752851E1DF0082F2E6 /* Notification.swift in Sources */,
 				140C4A732859BEEC00A49865 /* Balances.swift in Sources */,
 				14D612692851CB0F0082F2E6 /* Valr.swift in Sources */,
 				14D6126C2851CB520082F2E6 /* String.swift in Sources */,
+				140C4A7F285C75D000A49865 /* OrderViewController.swift in Sources */,
 				14D6127B2851E2F10082F2E6 /* Exchanges.swift in Sources */,
+				140C4A7D285BAB0800A49865 /* BaseView.swift in Sources */,
 				14D6128B2851EDF60082F2E6 /* SummaryTableViewCell.swift in Sources */,
 				14D612642851CB0F0082F2E6 /* Auth.swift in Sources */,
 			);

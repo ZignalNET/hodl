@@ -40,7 +40,7 @@ class DetailViewController: BaseScrollViewController {
             }
             getStackView().addArrangedSubview(table)
             
-            self.navigationItem.rightBarButtonItem  =  UIBarButtonItem(image: UIImage(named: "icon.extended"), style: .plain, target: self, action: #selector(openCredentials))
+            self.navigationItem.rightBarButtonItem  =  UIBarButtonItem(image: UIImage(named: "icon.key"), style: .plain, target: self, action: #selector(openCredentials))
         }
     }
     

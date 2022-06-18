@@ -65,13 +65,13 @@ class CredentialViewController: BaseScrollViewController {
             HodlTimer.resume()
         }
         else {
-            UIAlertController.presentMessage("API keys are not valid", "Error")
+            UIAlertController.presentMessage("API credentials are not valid", "Error")
         }
     }
     
     private func createCaption() -> UIView {
         let v = UIView(20)
-        let caption = UILabel( "Credentials", .left, 16, .medium, .defaultAppStrongColor)
+        let caption = UILabel( "Credentials", .left, 16, .medium, .lightGray)
         let i = UIImageView("icon.key")
         v.addSubview(i)
         v.addSubview(caption)

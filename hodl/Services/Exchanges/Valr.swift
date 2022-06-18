@@ -22,6 +22,13 @@ class Valr: Base {
         }
     }
     
+    override func validateResponse(_ response: URLResponse? = nil ) -> Bool {
+        guard let r = response as? HTTPURLResponse else { return false }
+        if r.statusCode == 200 { return true }
+        //TODO: Check for 429, backoff!!!
+        return false
+    }
+    
     override func fetchBalances(fiat: String) -> (Float,AssetsBalances?,Exchanges?) {
         var total: Float = 0.0
         var balances: AssetsBalances?
