@@ -17,7 +17,7 @@ struct ApiKey: Codable {
     let dateadded: Date
     let active: Bool
     
-    init(_ exchange: String, _ key: String = "" , _ secret: String = "" , _ userid: String = "", _ password: String = "",_ description: String = "", _ date: Date = Date(), _ active: Bool = true) {
+    init(_ exchange: String, _ key: String = "" , _ secret: String = "" , _ password: String = "", _ userid: String = "", _ description: String = "", _ date: Date = Date(), _ active: Bool = true) {
         self.exchange = exchange
         self.key = key
         self.secret = secret
@@ -31,7 +31,7 @@ struct ApiKey: Codable {
     func isValid(_ base: Base ) -> Bool {
         var isValid = true
         let oldAuth = base.credentials
-        base.setCredentials( .basic(self.key, self.secret) )
+        base.setCredentials(key: self)
         let urlRequest = base.buildURL(base.urls.balances)
         let response : WebServiceCallbackValues = base.queueRequest(urlRequest)
         if let error = response.1 {

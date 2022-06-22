@@ -15,6 +15,8 @@
 		140C4A7B285BA36E00A49865 /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A7A285BA36E00A49865 /* BadgeView.swift */; };
 		140C4A7D285BAB0800A49865 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A7C285BAB0800A49865 /* BaseView.swift */; };
 		140C4A7F285C75D000A49865 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A7E285C75D000A49865 /* OrderViewController.swift */; };
+		140C4A842860D8EB00A49865 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 140C4A832860D8EB00A49865 /* libz.tbd */; };
+		140C4A8728618BBE00A49865 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 140C4A8628618BBE00A49865 /* Starscream */; };
 		14D612342851C6A30082F2E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D612332851C6A30082F2E6 /* AppDelegate.swift */; };
 		14D612382851C6A30082F2E6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D612372851C6A30082F2E6 /* HomeViewController.swift */; };
 		14D6123D2851C6A50082F2E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14D6123C2851C6A50082F2E6 /* Assets.xcassets */; };
@@ -68,6 +70,7 @@
 		140C4A7A285BA36E00A49865 /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
 		140C4A7C285BAB0800A49865 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		140C4A7E285C75D000A49865 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
+		140C4A832860D8EB00A49865 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		14D612302851C6A30082F2E6 /* hodl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hodl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14D612332851C6A30082F2E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		14D612372851C6A30082F2E6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -117,19 +120,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				140C4A842860D8EB00A49865 /* libz.tbd in Frameworks */,
 				14D612572851CA610082F2E6 /* LiteDB in Frameworks */,
 				14D6125A2851CA820082F2E6 /* Charts in Frameworks */,
+				140C4A8728618BBE00A49865 /* Starscream in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		140C4A822860D8EB00A49865 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				140C4A832860D8EB00A49865 /* libz.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		14D612272851C6A30082F2E6 = {
 			isa = PBXGroup;
 			children = (
 				14D612322851C6A30082F2E6 /* hodl */,
 				14D612312851C6A30082F2E6 /* Products */,
+				140C4A822860D8EB00A49865 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -272,6 +286,7 @@
 			packageProductDependencies = (
 				14D612562851CA610082F2E6 /* LiteDB */,
 				14D612592851CA820082F2E6 /* Charts */,
+				140C4A8628618BBE00A49865 /* Starscream */,
 			);
 			productName = hodl;
 			productReference = 14D612302851C6A30082F2E6 /* hodl.app */;
@@ -304,6 +319,7 @@
 			packageReferences = (
 				14D612552851CA610082F2E6 /* XCRemoteSwiftPackageReference "LiteDB" */,
 				14D612582851CA820082F2E6 /* XCRemoteSwiftPackageReference "Charts" */,
+				140C4A8528618BBE00A49865 /* XCRemoteSwiftPackageReference "Starscream" */,
 			);
 			productRefGroup = 14D612312851C6A30082F2E6 /* Products */;
 			projectDirPath = "";
@@ -588,6 +604,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		140C4A8528618BBE00A49865 /* XCRemoteSwiftPackageReference "Starscream" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/daltoniam/Starscream.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 		14D612552851CA610082F2E6 /* XCRemoteSwiftPackageReference "LiteDB" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ZignalNET/LiteDB";
@@ -607,6 +631,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		140C4A8628618BBE00A49865 /* Starscream */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 140C4A8528618BBE00A49865 /* XCRemoteSwiftPackageReference "Starscream" */;
+			productName = Starscream;
+		};
 		14D612562851CA610082F2E6 /* LiteDB */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 14D612552851CA610082F2E6 /* XCRemoteSwiftPackageReference "LiteDB" */;

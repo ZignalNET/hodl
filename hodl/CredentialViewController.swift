@@ -11,6 +11,7 @@ class CredentialViewController: BaseScrollViewController {
     private var exchange: String?
     private var apiKey: UITextField = UITextField()
     private var apiSecret: UITextField = UITextField()
+    private var apiPassword: UITextField = UITextField()
     
     convenience init(exchange: String = "" ) {
         self.init()
@@ -30,11 +31,14 @@ class CredentialViewController: BaseScrollViewController {
             getStackView().addArrangedSubview( UIView("Key", "Enter API Key", apiKey)  )
             getStackView().addArrangedSubview( UIView(10) )
             getStackView().addArrangedSubview( UIView("Secret", "Enter API Secret", apiSecret)  )
+            getStackView().addArrangedSubview( UIView(10) )
+            getStackView().addArrangedSubview( UIView("Passphrase", "Enter API Passphrase", apiPassword)  )
            
             createSaveButton()
             if let data: ApiKey = KeyChainService.retrieveKey(exchange.uppercased()) {
                 apiKey.text    = data.key
                 apiSecret.text = data.secret
+                apiPassword.text = data.password
             }
         }
     }
@@ -52,17 +56,17 @@ class CredentialViewController: BaseScrollViewController {
             UIAlertController.presentMessage("API Secret Field cannot be blank", "Error")
             return
         }
+        
+        let password = apiPassword.text ?? ""
         guard let exchange = exchange else { return }
         guard let eo = ExchangeObjects[exchange.uppercased()] else { return }
-        let apikey = ApiKey(exchange.uppercased(), key, secret)
+        let apikey = ApiKey(exchange.uppercased(), key, secret, password)
         if apikey.isValid(eo) {
-            HodlTimer.suspend()
             if KeyChainService.saveKey(exchange.uppercased(), apikey) {
                 UIAlertController.presentMessage("Credentials successfully saved", "Success") { action in
                     self.dismissViewController()
                 }
             }
-            HodlTimer.resume()
         }
         else {
             UIAlertController.presentMessage("API credentials are not valid", "Error")

@@ -11,9 +11,14 @@ class HomeViewController: BaseScrollViewController {
     private var localFiat: String = globalLocalCurrency
     private var chartView: HodlPieChartView?
     private var summaryTableView: GenericTableView<Any, SummaryTableViewCell>!
-    private let orders = BadgeView("4")
+    private let orders = BadgeView("0", UIColor.white, UIColor.mediumSeaGreenColor)
     
     private var summaryTableModel: [(String,(Float,AssetsBalances?,Exchanges?))] = fetchDefaultExchangeData() //[("",(0,nil))]
+    private var toastView: UILabel?
+    
+    override func onRefreshControl( _ sender: Any ) {
+        refreshData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,8 +28,6 @@ class HomeViewController: BaseScrollViewController {
         createSummaryTable()
         getStackView().addArrangedSubview(chartView!)
         getStackView().addArrangedSubview( UIView(10) )
-        //getStackView().addArrangedSubview(UILabel( "Pending Orders", .left, 16, .medium, .white))
-        //getStackView().addArrangedSubview( UIView(10) )
         getStackView().addArrangedSubview(pendingOrderView())
         getStackView().addArrangedSubview( UIView(10) )
         getStackView().addArrangedSubview(createSummaryHeader())
@@ -34,10 +37,29 @@ class HomeViewController: BaseScrollViewController {
         registerNotifications()
         
         self.navigationItem.rightBarButtonItem  =  UIBarButtonItem(image: UIImage(named: "icon.extended"), style: .plain, target: self, action: #selector(openSettings))
+        
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 32, height: 32)) // Create new button & set its frame
+        button.setImage(#imageLiteral(resourceName: "icon.refresh"), for: .normal) // Assign an image
+        button.addTarget(self, action: #selector(self.refreshData), for: .touchUpInside)
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+        
+        refreshData()
     }
     
     @objc private func openSettings() {
         self.navigationController?.pushViewController(SettingViewController(), animated: true)
+    }
+    
+    @objc private func refreshData() {
+        guard isConnectedToInternet() else { UIAlertController.presentMessage("Your device appears to have lost active internet connection", "Error"); return }
+        if let customView = self.navigationItem.leftBarButtonItem?.customView {
+            let angle = CGAffineTransform(rotationAngle: 180 * .pi / 180)
+            UIView.animate(withDuration: 7.0, animations: { customView.transform = angle }, completion: { (finished) in
+                customView.transform = .identity
+            })
+        }
+        toastView = self.showToast(message: "Loading your portfolio ...", font: .systemFont(ofSize: 14.0))
+        fetchAllExchanges(globalLocalCurrency)
     }
     
     private func registerNotifications() {
@@ -51,6 +73,18 @@ class HomeViewController: BaseScrollViewController {
                     this.summaryTableModel.append((exchange, details))
                 }
                 this.summaryTableView.reloadWithData(models: this.summaryTableModel.sorted(by: {$0.1.0 > $1.1.0}))
+            }
+            
+            if let pendingOrders = notification.userInfo as? [String:(Int,PendingOrders)] {
+                let v = pendingOrders.map({$0.value.0}).reduce(0,+) //total orders on all exchanges
+                this.orders.updateBadgeText("\(v)")
+                for pendingOrder in pendingOrders {
+                    print(pendingOrder)
+                }
+            }
+            if let toastView = this.toastView {
+                toastView.removeFromSuperview()
+                this.toastView = nil
             }
         }
     }
@@ -107,7 +141,7 @@ class HomeViewController: BaseScrollViewController {
             caption.leadingAnchor.constraint(equalTo: v.leadingAnchor, constant: 10).isActive = true
             
             orders.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true
-            orders.trailingAnchor.constraint(equalTo: v.trailingAnchor, constant: -20).isActive = true
+            orders.trailingAnchor.constraint(equalTo: v.trailingAnchor, constant: -5).isActive = true
             return v
         }
         
@@ -124,11 +158,11 @@ class HomeViewController: BaseScrollViewController {
         label.leadingAnchor.constraint(equalTo: wrapper.leadingAnchor, constant: 10).isActive = true
         
         action.topAnchor.constraint(equalTo: wrapper.topAnchor, constant: 5).isActive = true
-        action.trailingAnchor.constraint(equalTo: wrapper.trailingAnchor, constant: -10).isActive = true
+        action.trailingAnchor.constraint(equalTo: wrapper.trailingAnchor, constant: -15).isActive = true
         
         v.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10).isActive = true
         v.leadingAnchor.constraint(equalTo: wrapper.leadingAnchor, constant: 10).isActive = true
-        v.widthAnchor.constraint(equalTo: wrapper.widthAnchor).isActive = true
+        v.widthAnchor.constraint(equalTo: wrapper.widthAnchor, multiplier: 0.95).isActive = true
         
         wrapper.addTapGestureRecognizer {
             self.navigationController?.pushViewController(OrderViewController(), animated: true)
@@ -136,8 +170,7 @@ class HomeViewController: BaseScrollViewController {
         
         return wrapper
     }
+    
 
 }
-
-
 

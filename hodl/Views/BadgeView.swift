@@ -8,10 +8,12 @@
 import UIKit
 
 class BadgeView: BaseView {
-    private let height:CGFloat = 24.0
-    private var width:CGFloat  = 24.0
-    private let badgeLabel = UILabel( "", .center, 10, .bold, .black)
-    private var pointSize: CGFloat  = 10.0
+    private let height:CGFloat = 28.0
+    private var width:CGFloat  = 28.0
+    private let badgeLabel = UILabel( "", .center, 12, .bold, .black)
+    private var pointSize: CGFloat  = 12.0
+    private var badgeColor: UIColor = .black
+    private var badgeBakgroundColor: UIColor = .white
     var widthConstraint:NSLayoutConstraint!
     
     override init(frame: CGRect) {
@@ -31,7 +33,7 @@ class BadgeView: BaseView {
         widthConstraint = self.widthAnchor.constraint(equalToConstant: labelWidth+12)
         widthConstraint.isActive = true
         
-        backgroundColor = .white
+        backgroundColor = badgeBakgroundColor
         roundCorners(height/2)
         
         self.addSubview(badgeLabel)
@@ -48,6 +50,7 @@ class BadgeView: BaseView {
     
     func updateBadgeText(_ newValue: String = "" ) {
         badgeLabel.text = newValue
+        badgeLabel.textColor = badgeColor
         var x = badgeLabel.calculateBoundingRect(fontSize: pointSize).width
         var diff: CGFloat = 0
         if x <= self.width {x = self.width}
@@ -59,8 +62,10 @@ class BadgeView: BaseView {
 }
 
 extension BadgeView {
-    convenience init(_ badgeText: String = "" ) {
+    convenience init(_ badgeText: String = "", _ textColor: UIColor, _ backColor: UIColor ) {
         self.init()
+        self.badgeColor = textColor
+        self.backgroundColor = backColor
         updateBadgeText(badgeText)
     }
 }

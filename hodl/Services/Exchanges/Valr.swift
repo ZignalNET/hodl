@@ -7,9 +7,14 @@
 
 import Foundation
 
+@objc(Valr)
 class Valr: Base {
     
-    public static let singleInstance = Valr("VALR", .none)
+    public static let singleInstance = Valr(.none)
+    
+    override func setCredentials(key: ApiKey) {
+        setCredentials(.basic(key.key, key.secret) )
+    }
     
     override func signRequest(_ urlRequest: inout URLRequest, _ extra: ((String,String),EndPoints.Method)? = nil) {
         if let path = extra {
@@ -69,22 +74,34 @@ class Valr: Base {
                 }
             }
         }
-        if let data = Base.convertAssets(assets.joined(separator: ","),base) {
-            if let b = assetbalances[base] { total += b.0 }
-            for d in data {
-                let key = d.key
-                let value = d.value as! Dictionary<String,NSNumber>
-                if let rate = value[base] {
-                    //print(key,rate)
-                    if let balance = assetbalances[key] {
-                        let t = balance.0
-                        assetbalances[key]?.1 = t * rate.floatValue
-                        total += assetbalances[key]!.1
+        let mockdata = Base.fetchMockData()
+        (total,assetbalances) = Base.convetAssetBalancesToLocal(base: base, assets: mockdata.0, assetbalances: mockdata.1)
+        //(total,assetbalances) = Base.convetAssetBalancesToLocal(base: base, assets: assets, assetbalances: assetbalances)
+        return (total,assetbalances)
+    }
+    
+    override func fetchPendingOrders() -> [PendingOrder] {
+        var pendingOrders:[PendingOrder] = []
+        if hasApiKeys() != nil {
+            let urlRequest = buildURL(self.urls.orders)
+            let semaphore = DispatchSemaphore(value: 0)
+            queueRequest(urlRequest) {
+                (data: [ResponseData.Valr.PendingOrder]? , error: Error?) in
+                if let orders = data {
+                    //print(orders)
+                    for order in orders {
+                        let d = order.createdAt//Base.dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(order.time/1000)))
+                        pendingOrders.append(( "\(order.orderId)",order.currencyPair,Float(order.price),Float(order.originalQuantity),d))
                     }
                 }
+                if let error = error {
+                    print(error)
+                }
+                semaphore.signal()
             }
+            semaphore.wait()
         }
-        return (total,assetbalances)
+        return pendingOrders
     }
     
 }
@@ -96,5 +113,25 @@ extension ResponseData.Valr {
         public var reserved: String
         public var total: String
         public var updatedAt: String?
+    }
+}
+
+extension ResponseData.Valr {
+    public struct PendingOrder: Codable {
+        public var orderId: String
+        public var side: String
+        public var remainingQuantity: String
+        public var price: String
+        public var currencyPair: String
+        
+        public var createdAt: String
+        public var originalQuantity: String
+        public var filledPercentage: String
+        public var stopPrice: String
+        public var updatedAt: String
+        
+        public var status: String
+        public var type: String
+        public var timeInForce: String
     }
 }

@@ -8,10 +8,15 @@
 
 import Foundation
 import UIKit
+import Starscream
 
+@objc(Luno)
 class Luno: Base {
     
-    public static let singleInstance = Luno("LUNO", .none)
+    public static let singleInstance = Luno(.none)
+    override func setCredentials(key: ApiKey) {
+        setCredentials(.basic(key.key, key.secret) )
+    }
     
     override func signRequest(_ urlRequest: inout URLRequest, _ extra: ((String,String),EndPoints.Method)? = nil) {
         urlRequest.setValue("Basic \(credentials.authString)", forHTTPHeaderField: "Authorization")
@@ -23,6 +28,15 @@ class Luno: Base {
         if r.statusCode == 200 { return true }
         //TODO: Check for 429, backoff!!!
         return false
+    }
+    
+    override func sendWebSocketCredentials(_ client: WebSocket) {
+        if let apiKey = hasApiKeys(), isConnectedToWebSocket == true {
+            let d = ["api_key_id":apiKey.key,"api_key_secret":apiKey.secret]
+            let jsonData = try! JSONSerialization.data(withJSONObject: d, options: JSONSerialization.WritingOptions.prettyPrinted)
+            let jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
+            client.write(string: jsonString)
+        }
     }
     
     override func fetchBalances(fiat: String) -> (Float,AssetsBalances?,Exchanges?) {
@@ -46,14 +60,18 @@ class Luno: Base {
         return (total, balances,Exchanges.singleInstance.find(self.name))
     }
     
-    override func fetchPendingOrders() {
+    override func fetchPendingOrders() -> [PendingOrder] {
+        var pendingOrders:[PendingOrder] = []
         if hasApiKeys() != nil {
             let urlRequest = buildURL(self.urls.orders,["state":"PENDING"])
             let semaphore = DispatchSemaphore(value: 0)
             queueRequest(urlRequest) {
                 (data: ResponseData.Luno.PendingOrders? , error: Error?) in
                 if let r = data {
-                    print(r)
+                    for order in r.orders {
+                        let d = Base.dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(order.creation_timestamp/1000)))
+                        pendingOrders.append(  ( order.order_id,order.pair,Float(order.limit_price),Float(order.limit_volume),d) )
+                    }
                 }
                 if let error = error {
                     print(error)
@@ -62,7 +80,10 @@ class Luno: Base {
             }
             semaphore.wait()
         }
+        return pendingOrders
     }
+    
+    
 }
 
 extension ResponseData.Luno  {
@@ -98,21 +119,9 @@ extension ResponseData.Luno  {
                 }
             }
             
-            if let data = Base.convertAssets(assets.joined(separator: ","),base) {
-                if let b = balances[base] { total += b.0 }
-                for d in data {
-                    let key = d.key
-                    let value = d.value as! Dictionary<String,NSNumber>
-                    if let rate = value[base] {
-                        //print(key,rate)
-                        if let balance = balances[key] {
-                            let t = balance.0
-                            balances[key]?.1 = t * rate.floatValue
-                            total += balances[key]!.1
-                        }
-                    }
-                }
-            }
+            let mockdata = Base.fetchMockData()
+            (total,balances) = Base.convetAssetBalancesToLocal(base: base, assets: mockdata.0, assetbalances: mockdata.1)
+            //(total,balances) = Base.convetAssetBalancesToLocal(base: base, assets: assets, assetbalances: balances)
             
             /*let exchangeRate = fetchLastTradedPrice()
             var totalBTC = Float(0.0)
@@ -170,3 +179,7 @@ extension ResponseData.Luno  {
     }
 }
 
+
+extension Luno {
+    
+}

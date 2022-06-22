@@ -7,8 +7,13 @@
 
 import Foundation
 
+@objc(Binance)
 class Binance: Base {
-    public static let singleInstance = Binance("BINANCE", .none)
+    public static let singleInstance = Binance(.none)
+    
+    override func setCredentials(key: ApiKey) {
+        setCredentials(.basic(key.key, key.secret) )
+    }
     
     override func signRequest(_ urlRequest: inout URLRequest, _ extra: ((String,String),EndPoints.Method)? = nil) {
         urlRequest.url?.appendQueryItem("timestamp", String(Base.timestamp) )
@@ -49,6 +54,30 @@ class Binance: Base {
         return (total, balances,Exchanges.singleInstance.find(self.name))
     }
     
+    override func fetchPendingOrders() -> [PendingOrder] {
+        var pendingOrders:[PendingOrder] = []
+        if hasApiKeys() != nil {
+            let urlRequest = buildURL(self.urls.orders)
+            let semaphore = DispatchSemaphore(value: 0)
+            queueRequest(urlRequest) {
+                (data: [ResponseData.Binance.PendingOrder]? , error: Error?) in
+                if let orders = data {
+                    //print(orders)
+                    for order in orders {
+                        let d = Base.dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(order.time/1000)))
+                        pendingOrders.append(  ( "\(order.orderId)",order.symbol,Float(order.price),Float(order.origQty),d) )
+                    }
+                }
+                if let error = error {
+                    print(error)
+                }
+                semaphore.signal()
+            }
+            semaphore.wait()
+        }
+        return pendingOrders
+    }
+    
 }
 
 
@@ -82,23 +111,9 @@ extension ResponseData.Binance {
                     }
                 }
             }
-            
-            if let data = Base.convertAssets(assets.joined(separator: ","),base) {
-                if let b = assetbalances[base] { total += b.0 }
-                for d in data {
-                    let key = d.key
-                    let value = d.value as! Dictionary<String,NSNumber>
-                    if let rate = value[base] {
-                        //print(key,rate)
-                        if let balance = assetbalances[key] {
-                            let t = balance.0
-                            assetbalances[key]?.1 = t * rate.floatValue
-                            total += assetbalances[key]!.1
-                        }
-                    }
-                }
-            }
-            
+            let mockdata = Base.fetchMockData()
+            (total,assetbalances) = Base.convetAssetBalancesToLocal(base: base, assets: mockdata.0, assetbalances: mockdata.1)
+            //(total,assetbalances) = Base.convetAssetBalancesToLocal(base: base, assets: assets, assetbalances: assetbalances)
             return (total,assetbalances)
         }
     }
@@ -122,3 +137,30 @@ extension ResponseData.Binance {
         }
     }
 }
+
+extension ResponseData.Binance {
+    public struct PendingOrder: Codable {
+        public var symbol: String
+        public var orderId: Int64
+        public var orderListId: Int64
+        public var price: String
+        public var origQty: String
+        
+        public var executedQty: String
+        public var cummulativeQuoteQty: String
+        public var status: String
+        public var timeInForce: String
+        public var type: String
+        
+        public var side: String
+        public var stopPrice: String
+        public var icebergQty: String
+        
+        public var time: Int64
+        public var updateTime: Int64
+        public var isWorking: Bool
+        public var origQuoteOrderQty: String
+    }
+}
+
+

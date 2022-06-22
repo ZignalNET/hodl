@@ -59,6 +59,62 @@ func initModels() {
     initExchanges()
 }
 
+func fetchAllExchanges(_ localFiat: String) {
+    guard isConnectedToInternet() else { return }
+    DispatchQueue.global(qos: .background).async {
+        var balances:[(Float,AssetsBalances?,Exchanges?)] = []
+        var pendingOrders: [String:(Int,PendingOrders)] = [:]
+        for exchange in fetchExchanges() {
+            if let name = exchange["name"] as? String, let e = NSClassFromString(name.capitalized) as? Base.Type {
+                let l = e.init(.none)
+                let b = l.fetchBalances(fiat: localFiat)
+                let p = l.fetchPendingOrders()
+                balances.append(b)
+                pendingOrders[name] = (p.count,p)
+            }
+        }
+        
+        let total   = balances.map({$0.0}).reduce(0,+)  //Sum of totals
+        let btc     = Base.convertAssets(localFiat, "BTC", false)
+        let local   = Base.convertAssets("BTC", "\(localFiat),USD", false)
+        
+        let names = balances.map({ $0.1?.map({ $0.key }) }).filter({ $0 != nil })
+        for name in names { Assets.add(name) }
+        let exchanges = balances.filter({ $0.1 != nil && $0.2 != nil }).map({ ($0.2! , $0.1 ?? [:]) })
+        for exchange in exchanges {
+            if let eid = exchange.0["id"] as? Int32 {
+                for asset in exchange.1 {
+                    if let a = Assets.singleInstance.find(asset.key), let aid = a["id"] as? Int32 {
+                        Balances.singleInstance.add(eid, aid, localFiat, String(format:"%.10f",asset.value.0), String(format:"%.10f",asset.value.1))
+                    }
+                }
+            }
+        }
+    
+        DispatchQueue.main.async {
+            //On main thread
+            if let btc = btc?.first, let local = local, let btcUSD = local["USD"] as? NSNumber, let btcLocal = local[localFiat] as? NSNumber{
+                var userObject: [String:Float] = [:]
+                var userInfo:   [String:Float] = [:]
+                var details:    [String:(Float,AssetsBalances?,Exchanges?)]  = [:]
+                userInfo["localtotal"]  = total
+                userInfo["btctotal"]    = total * (btc.value as! NSNumber).floatValue
+                userInfo["btcUSD"]      = btcUSD.floatValue
+                userInfo["btcLocal"]    = btcLocal.floatValue
+                
+                for balance in balances {
+                    if let e = balance.2, let name = e["name"] as? String{
+                        userObject[name.capitalized]        = balance.0
+                        details[name.uppercased()]          = balance
+                    }
+                }
+                
+                NotificationCenter.default.post(name: .refreshExchangeDataTotals, object: userObject, userInfo: userInfo)
+                NotificationCenter.default.post(name: .refreshExchangeDataDetails, object: details, userInfo: pendingOrders)
+            }
+        }
+    }
+}
 
 func fetchExchangeData(_ localFiat: String ) {
     guard isConnectedToInternet() else { return }

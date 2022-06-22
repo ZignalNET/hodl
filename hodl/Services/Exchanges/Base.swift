@@ -6,11 +6,14 @@
 //  Copyright © 2022. All rights reserved.
 
 import UIKit
+import Starscream
 
 typealias WebServiceCodableCallback<T: Codable>    = (T?, Error?)      -> Void
 typealias WebServiceCallback                       = (Data?, Error?)   -> Void
 typealias WebServiceCallbackValues                 = (Data?, Error?)
 typealias AssetsBalances                           = [String:(Float,Float)]
+typealias PendingOrder                             = (String,String,Float?,Float?,String)
+typealias PendingOrders                            = [PendingOrder]
 
 public enum WebServiceError: Error {
     case invalidResponse(URLResponse)
@@ -18,9 +21,15 @@ public enum WebServiceError: Error {
     case invalidResponseData(Data)
 }
 
-let BaseInstance = Base("", .none)
+protocol BaseMethods {
+    func fetchBalances(fiat: String) -> (Float,AssetsBalances?,Exchanges?)
+    func fetchPendingOrders() -> [PendingOrder]
+}
 
-class Base {
+let BaseInstance = Base(.none)
+
+@objc(Base)
+class Base: NSObject, BaseMethods, WebSocketDelegate {
     private(set) var name: String = ""
     private(set) var credentials: Auth = .none
     private(set) var urls: EndPoints = .UNDEFINED
@@ -30,14 +39,30 @@ class Base {
     private var requestTask: URLSessionDataTask?
     private var decoder = JSONDecoder()
     
-    internal required init(_ name: String, _ auth: Auth = .none ) {
-        self.name = name.uppercased()
+    private var webSocket: WebSocket?
+    private(set) var isConnectedToWebSocket = false
+    
+    static var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.locale = Locale.current
+        return formatter
+    }()
+    
+    private override init() {
+        super.init()
+    }
+    
+    internal required init(_ auth: Auth = .none ) {
+        super.init()
+        self.name = NSStringFromClass(type(of: self)).uppercased()
         self.credentials = auth
         self.urls   = EndPoints(value: name)
         
         if auth == .none {
             if let apikey = hasApiKeys() {
-                self.credentials = .basic(apikey.key, apikey.secret)
+                setCredentials(key: apikey)
+                openWebSocket() // but dont connect yet!
             }
         }
     }
@@ -56,6 +81,10 @@ class Base {
     
     func setCredentials(_ credentials: Auth) {
         self.credentials = credentials
+    }
+    
+    func setCredentials(key: ApiKey) {
+        
     }
     
     func getJSONDecoder() -> JSONDecoder { return decoder }
@@ -102,6 +131,8 @@ class Base {
                     if self.validateResponse(response) { //check for 200.. derived class should check for 429 etc ...
                         // make sure we got response data
                         guard let responseData = data else { completion?(nil,error); return }
+                        //self.printResponseAsText(responseData: responseData)
+                        //print( requestURL.description )
                         do {
                             let obj = try self.decoder.decode(T.self, from: responseData)
                             completion?(obj,nil)
@@ -178,9 +209,29 @@ class Base {
         fatalError("Must be overridden and implemented in derived class ...")
     }
     
-    func fetchPendingOrders() {
+    func fetchPendingOrders() -> [PendingOrder] {
         fatalError("Must be overridden and implemented in derived class ...")
     }
+    
+    func sendWebSocketCredentials(_ client: WebSocket) {
+       
+    }
+    
+    private func openWebSocket() {
+        if let url = URL(string: self.urls.streams) {
+            var request = URLRequest(url: url)
+            request.timeoutInterval = 5
+            webSocket = WebSocket(request: request)
+        }
+    }
+    
+    func connectToWebSocket() {
+        if let webSocket = webSocket {
+            webSocket.delegate = self
+            webSocket.connect()
+        }
+    }
+    
 }
 
 
@@ -198,41 +249,95 @@ extension Base {
     }
 }
 
+extension Base {
+    class func convetAssetBalancesToLocal(base: String, assets:[String], assetbalances: AssetsBalances) -> (Float,AssetsBalances) {
+        var total: Float = 0.0
+        let assetList = assets.joined(separator: ",")
+        var balances: AssetsBalances = assetbalances
+        if assetList.count > 0, let data = Base.convertAssets(assetList,base) {
+            if let b = balances[base] { total += b.0 }
+            for d in data {
+                let key = d.key
+                let value = d.value as! Dictionary<String,NSNumber>
+                if let rate = value[base] {
+                    if let balance = balances[key] {
+                        let t = balance.0
+                        balances[key]?.1 = t * rate.floatValue
+                        total += balances[key]!.1
+                    }
+                }
+            }
+        }
+        return ( total, balances )
+    }
+}
+
 
 extension Base {
+    func didReceive(event: WebSocketEvent, client: WebSocket) {
+        switch event {
+        case .connected(let headers):
+            isConnectedToWebSocket = true
+            sendWebSocketCredentials(client)
+            onConnect(headers)
+        case .disconnected(let reason, let code):
+            isConnectedToWebSocket = false
+            onDisConnect(reason, code)
+        case .text(let string):
+            onReceivedText(string)
+        case .binary(let data):
+            onReceivedData(data)
+        case .ping(_):
+            break
+        case .pong(_):
+            break
+        case .viabilityChanged(_):
+            break
+        case .reconnectSuggested(_):
+            break
+        case .cancelled:
+            isConnectedToWebSocket = false
+            break
+        case .error(let error):
+            isConnectedToWebSocket = false
+            print(error!)
+        }
+    }
+    
+    func onConnect(_ headers: [String: String]) {
+        print( headers )
+    }
+    
+    func onDisConnect(_ reason: String, _ code: UInt16) {
+        
+    }
+    
+    func onReceivedText(_ text: String) {
+        print(text)
+    }
+    
+    func onReceivedData(_ data: Data?) {
+        
+    }
+}
 
-    func DarwinVersion() -> String {
-        var sysinfo = utsname()
-        uname(&sysinfo)
-        let dv = String(bytes: Data(bytes: &sysinfo.release, count: Int(_SYS_NAMELEN)), encoding: .ascii)!.trimmingCharacters(in: .controlCharacters)
-        return "Darwin/\(dv)"
+
+extension Collection {
+    func randomElements(_ count: Int) -> [Element] {
+        var shuffledIterator = shuffled().makeIterator()
+        return (0..<count).compactMap { _ in shuffledIterator.next() }
     }
-    
-    func CFNetworkVersion() -> String {
-        let dictionary = Bundle(identifier: "com.apple.CFNetwork")?.infoDictionary!
-        let version = dictionary?["CFBundleShortVersionString"] as! String
-        return "CFNetwork/\(version)"
-    }
-    
-    func deviceVersion() -> String {
-        let currentDevice = UIDevice.current
-        return "\(currentDevice.systemName)/\(currentDevice.systemVersion)"
-    }
-    
-    func deviceName() -> String {
-        var sysinfo = utsname()
-        uname(&sysinfo)
-        return String(bytes: Data(bytes: &sysinfo.machine, count: Int(_SYS_NAMELEN)), encoding: .ascii)!.trimmingCharacters(in: .controlCharacters)
-    }
-    
-    func appNameAndVersion() -> String {
-        let dictionary = Bundle.main.infoDictionary!
-        let version = dictionary["CFBundleShortVersionString"] as! String
-        let name = dictionary["CFBundleName"] as! String
-        return "\(name.capitalized(with: nil))/\(version)"
-    }
-    
-    func UserAgentString() -> String {
-        return "\(appNameAndVersion()) \(deviceName()) \(deviceVersion()) \(CFNetworkVersion()) \(DarwinVersion())"
+}
+
+extension Base {
+    class func fetchMockData() -> ([String],AssetsBalances){
+        let assets = ["BTC","ETH","XRP","SOL","BCH","LTC","DOGE","USDT","USDC","BNB","ADA","DOT"].randomElements(4)
+        var balances: AssetsBalances = [:]
+        for asset in assets {
+            let lower: Float = asset == "BTC" ? 0.89 : 4
+            let upper: Float = asset == "BTC" ? 2.01 : 20
+            balances[asset] = (Float.random(in: lower..<upper),0.0)
+        }
+        return (assets, balances)
     }
 }

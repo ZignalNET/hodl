@@ -21,10 +21,8 @@ class SettingViewController: BaseScrollViewController {
             (action,index,cell,data) in
             let currency = data as! String
             if action == .SelectCell {
-                HodlTimer.suspend()
                 globalLocalCurrency = currency
                 self.table.reloadData()
-                HodlTimer.resume()
                 UIAlertController.presentMessage("Your local currency has now been changed to \(currency)", "Info")
             }
             return false
