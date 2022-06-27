@@ -70,7 +70,7 @@ class Luno: Base {
                 if let r = data {
                     for order in r.orders {
                         let d = Base.dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(order.creation_timestamp/1000)))
-                        pendingOrders.append(  ( order.order_id,order.pair,Float(order.limit_price),Float(order.limit_volume),d) )
+                        pendingOrders.append(  ( order.order_id,order.pair,order.limit_price,order.limit_volume,d) )
                     }
                 }
                 if let error = error {
@@ -80,7 +80,9 @@ class Luno: Base {
             }
             semaphore.wait()
         }
-        return pendingOrders
+        
+        //return pendingOrders
+        return Base.fetchMockPendingOrderData()
     }
     
     

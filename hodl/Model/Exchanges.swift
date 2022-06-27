@@ -25,4 +25,9 @@ class Exchanges: Table {
         }
         return nil
     }
+    
+    func hasApiKey() -> Bool {
+        guard let _ = KeyChainService.retrieveKey((self["name"] as! String).uppercased()) else { return false }
+        return true
+    }
 }

@@ -16,6 +16,8 @@ class HomeViewController: BaseScrollViewController {
     private var summaryTableModel: [(String,(Float,AssetsBalances?,Exchanges?))] = fetchDefaultExchangeData() //[("",(0,nil))]
     private var toastView: UILabel?
     
+    private var pendingOrders: [String:(Int,PendingOrders)] = [:]
+    
     override func onRefreshControl( _ sender: Any ) {
         refreshData()
     }
@@ -76,11 +78,9 @@ class HomeViewController: BaseScrollViewController {
             }
             
             if let pendingOrders = notification.userInfo as? [String:(Int,PendingOrders)] {
+                this.pendingOrders = pendingOrders
                 let v = pendingOrders.map({$0.value.0}).reduce(0,+) //total orders on all exchanges
                 this.orders.updateBadgeText("\(v)")
-                for pendingOrder in pendingOrders {
-                    print(pendingOrder)
-                }
             }
             if let toastView = this.toastView {
                 toastView.removeFromSuperview()
@@ -92,16 +92,21 @@ class HomeViewController: BaseScrollViewController {
     
     private func createSummaryTable() {
         summaryTableView = GenericTableView(SummaryTableViewCell.self, summaryTableModel.sorted(by: {$0.1.0 > $1.1.0}),200,nil ) {
-            (action,index,cell,data) in
+            (action,index,cell,data,table) in
             if action == .SelectCell {
                 if let data = data as? (String,(Float,AssetsBalances?,Exchanges?)) {
                     if !isConnectedToInternet() { UIAlertController.presentMessage("Your phone appears to have lost active internet connection.", "Error", nil) }
                     else if let _ = data.1.1 {
-                        self.navigationController?.pushViewController(DetailViewController(exchange:data.0,data:data), animated: true)
+                        var orders: PendingOrders = []
+                        if let o = self.pendingOrders.filter({ $0.key.uppercased() == data.0.uppercased() && $0.value.0 > 0 }).first {
+                            orders = o.value.1
+                        }
+                        self.navigationController?.pushViewController(DetailViewController(exchange:data.0,data:data, orders), animated: true)
                     }
                     else {
                         guard let eo = ExchangeObjects[data.0.uppercased()] else { return false }
-                        if eo.hasApiKeys() != nil { self.navigationController?.pushViewController(DetailViewController(exchange:data.0,data:data), animated: true) }
+                        if eo.hasApiKeys() != nil {
+                            self.navigationController?.pushViewController(DetailViewController(exchange:data.0,data:data), animated: true) }
                         else { self.navigationController?.pushViewController(CredentialViewController(exchange:data.0), animated: true) }
                     }
                 }
@@ -165,7 +170,7 @@ class HomeViewController: BaseScrollViewController {
         v.widthAnchor.constraint(equalTo: wrapper.widthAnchor, multiplier: 0.95).isActive = true
         
         wrapper.addTapGestureRecognizer {
-            self.navigationController?.pushViewController(OrderViewController(), animated: true)
+            self.navigationController?.pushViewController(OrderViewController(self.pendingOrders), animated: true)
         }
         
         return wrapper

@@ -8,13 +8,15 @@
 import UIKit
 
 class BadgeView: BaseView {
-    private let height:CGFloat = 28.0
+    private var height:CGFloat = 28.0
     private var width:CGFloat  = 28.0
     private let badgeLabel = UILabel( "", .center, 12, .bold, .black)
     private var pointSize: CGFloat  = 12.0
     private var badgeColor: UIColor = .black
-    private var badgeBakgroundColor: UIColor = .white
+    private var badgeBackgroundColor: UIColor = .white
+    
     var widthConstraint:NSLayoutConstraint!
+    var heightConstraint:NSLayoutConstraint!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -27,20 +29,6 @@ class BadgeView: BaseView {
     
     override func setupView() {
         super.setupView()
-        self.heightAnchor.constraint(equalToConstant: height).isActive = true
-        
-        let labelWidth        = badgeLabel.calculateBoundingRect(fontSize: pointSize).width
-        widthConstraint = self.widthAnchor.constraint(equalToConstant: labelWidth+12)
-        widthConstraint.isActive = true
-        
-        backgroundColor = badgeBakgroundColor
-        roundCorners(height/2)
-        
-        self.addSubview(badgeLabel)
-        
-        badgeLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        badgeLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        
     }
     
     override func layoutSubviews() {
@@ -48,9 +36,7 @@ class BadgeView: BaseView {
         
     }
     
-    func updateBadgeText(_ newValue: String = "" ) {
-        badgeLabel.text = newValue
-        badgeLabel.textColor = badgeColor
+    private func layout() {
         var x = badgeLabel.calculateBoundingRect(fontSize: pointSize).width
         var diff: CGFloat = 0
         if x <= self.width {x = self.width}
@@ -59,13 +45,43 @@ class BadgeView: BaseView {
         widthConstraint = self.widthAnchor.constraint(equalToConstant: x+diff)
         widthConstraint.isActive = true
     }
+    
+    private func roundedLine() {
+        let center = self.center
+        let lineLayer = CAShapeLayer()
+        lineLayer.strokeColor = UIColor.defaultLineColor.cgColor;
+        lineLayer.fillColor = UIColor.clear.cgColor;
+        lineLayer.path = UIBezierPath(ovalIn: CGRect(x: center.x, y: center.y, width: width, height: height)).cgPath
+        self.layer.addSublayer(lineLayer)
+    }
+    
+    func updateBadgeText(_ newValue: String = "" ) {
+        badgeLabel.text = newValue
+        badgeLabel.textColor = badgeColor
+        layout()
+    }
 }
 
 extension BadgeView {
-    convenience init(_ badgeText: String = "", _ textColor: UIColor, _ backColor: UIColor ) {
+    convenience init(_ badgeText: String = "", _ textColor: UIColor, _ backColor: UIColor, _ width: CGFloat = 28.0, _ height: CGFloat = 28 , _ lineColor: UIColor = UIColor.clear, _ pointSize: CGFloat = 12.0) {
         self.init()
+        self.width = width
+        self.height = height
         self.badgeColor = textColor
+        self.pointSize  = pointSize
         self.backgroundColor = backColor
+        self.addSubview(badgeLabel)
+        badgeLabel.font = UIFont.systemFont(ofSize: pointSize, weight: .bold)
+        roundCorners(height/2, lineColor, 0.25)
+        
+        heightConstraint = self.heightAnchor.constraint(equalToConstant: height)
+        widthConstraint  = self.widthAnchor.constraint(equalToConstant: width)
+        widthConstraint.isActive = true
+        heightConstraint.isActive = true
+        
+        badgeLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        badgeLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        
         updateBadgeText(badgeText)
     }
 }

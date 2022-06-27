@@ -91,4 +91,15 @@ extension String {
         return self
     }
     
+    func toCurrency(_ decimalPlaces: Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = decimalPlaces
+        formatter.maximumFractionDigits = decimalPlaces
+        if let a = Float(self) {
+            return formatter.string(from: NSNumber(value: a)) ?? ""
+        }
+        return self
+    }
+    
 }

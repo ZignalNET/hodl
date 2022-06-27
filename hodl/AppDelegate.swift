@@ -25,6 +25,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = window ?? UIWindow(frame: UIScreen.main.bounds)
         window?.rootViewController = BaseNavigationController( rootViewController: viewController )
         window?.makeKeyAndVisible()
+        
+        if fetchConnectedExchanges().count == 0 {
+            viewController.navigationController?.pushViewController(SettingViewController(), animated: true)
+        }
+        else {
+            viewController.navigationController?.pushViewController(LaunchViewController(), animated: true)
+        }
     }
     
 }

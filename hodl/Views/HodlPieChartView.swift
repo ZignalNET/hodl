@@ -135,10 +135,10 @@ class HodlPieChartView: PieChartView {
     private func registerNotifications() {
         self.localFiat = globalLocalCurrency
         NotificationCenter.default.addObserver(forName: .refreshExchangeDataTotals, object: nil, queue: nil) { [weak self] (notification) in
-            guard let this = self , let localFiat = this.localFiat else { return }
+            guard let this = self /*, let localFiat = this.localFiat*/ else { return }
             DispatchQueue.main.async {
                 if let data = notification.userInfo as? [String:Float] {
-                    this.totalValue.text = "\(localFiat) " + "\(data["localtotal"]!)".toCurrency
+                    this.totalValue.text = "\(globalLocalCurrency) " + "\(data["localtotal"]!)".toCurrency
                     this.bottomText.text =  String(format: "%.2f", data["btctotal"]!) + " BTC"
                     this.leftValue.text  = "\(data["btcUSD"]!)".toCurrency
                     this.rightValue.text = "\(data["btcLocal"]!)".toCurrency

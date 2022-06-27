@@ -12,7 +12,7 @@ typealias WebServiceCodableCallback<T: Codable>    = (T?, Error?)      -> Void
 typealias WebServiceCallback                       = (Data?, Error?)   -> Void
 typealias WebServiceCallbackValues                 = (Data?, Error?)
 typealias AssetsBalances                           = [String:(Float,Float)]
-typealias PendingOrder                             = (String,String,Float?,Float?,String)
+typealias PendingOrder                             = (String,String,String,String,String)
 typealias PendingOrders                            = [PendingOrder]
 
 public enum WebServiceError: Error {
@@ -254,16 +254,18 @@ extension Base {
         var total: Float = 0.0
         let assetList = assets.joined(separator: ",")
         var balances: AssetsBalances = assetbalances
+        //print(assetList,base)
         if assetList.count > 0, let data = Base.convertAssets(assetList,base) {
             if let b = balances[base] { total += b.0 }
             for d in data {
                 let key = d.key
-                let value = d.value as! Dictionary<String,NSNumber>
-                if let rate = value[base] {
-                    if let balance = balances[key] {
-                        let t = balance.0
-                        balances[key]?.1 = t * rate.floatValue
-                        total += balances[key]!.1
+                if let value = d.value as? Dictionary<String,NSNumber> {
+                    if let rate = value[base] {
+                        if let balance = balances[key] {
+                            let t = balance.0
+                            balances[key]?.1 = t * rate.floatValue
+                            total += balances[key]!.1
+                        }
                     }
                 }
             }
@@ -330,8 +332,24 @@ extension Collection {
 }
 
 extension Base {
+    class func generateRandomDate(daysBack: Int = 10)-> Date?{
+        let day = arc4random_uniform(UInt32(daysBack))+1
+        let hour = arc4random_uniform(23)
+        let minute = arc4random_uniform(59)
+        
+        let today = Date(timeIntervalSinceNow: 0)
+        let gregorian  = NSCalendar(calendarIdentifier: NSCalendar.Identifier.gregorian)
+        var offsetComponents = DateComponents()
+        offsetComponents.day = -1 * Int(day - 1)
+        offsetComponents.hour = -1 * Int(hour)
+        offsetComponents.minute = -1 * Int(minute)
+        
+        let randomDate = gregorian?.date(byAdding: offsetComponents, to: today, options: .init(rawValue: 0) )
+        return randomDate
+    }
+    
     class func fetchMockData() -> ([String],AssetsBalances){
-        let assets = ["BTC","ETH","XRP","SOL","BCH","LTC","DOGE","USDT","USDC","BNB","ADA","DOT"].randomElements(4)
+        let assets = ["BTC","ETH","XRP","SOL","BCH","LTC","DOGE","USDT","USDC","BNB","ADA","DOT"].randomElements(Int.random(in: 4..<10))
         var balances: AssetsBalances = [:]
         for asset in assets {
             let lower: Float = asset == "BTC" ? 0.89 : 4
@@ -339,5 +357,28 @@ extension Base {
             balances[asset] = (Float.random(in: lower..<upper),0.0)
         }
         return (assets, balances)
+    }
+    
+    class func fetchMockPendingOrderData() -> [PendingOrder] {
+        var pendingOrders:[PendingOrder] = []
+        let pairs = ["ETHBTC","XRPBTC","BTCUSD","BTCUSDT","ETHADA","XRPZAR","ETHUSD","BTCGBP","DOGEUSDT","DOTBTC"].randomElements( Int.random(in: 4..<9)  )
+        let data : [String:(Float,Float,Int)] = ["ETHBTC":(0.04,0.0567,Int.random(in: 10..<20)),
+                                          "XRPBTC":(0.0000016,0.00000174,Int.random(in: 100000..<200000)),
+                                          "BTCUSD":(20000,21500,Int.random(in: 2..<4)),
+                                          "BTCUSDT":(20000,21500,Int.random(in: 1..<3)),
+                                          "ETHADA":(0.0004,0.00045,Int.random(in: 10..<20)),
+                                          "XRPZAR":(5.4,5.9,Int.random(in: 200..<400)),
+                                          "ETHUSD":(1200,1220,Int.random(in: 10..<20)),
+                                          "BTCGBP":(17200,17210,Int.random(in: 1..<4)),
+                                          "DOGEUSDT":(0.06,0.065,Int.random(in: 10000..<20000)),
+                                          "DOTBTC":(0.0003,0.00038,Int.random(in: 100..<200))
+                                         ]
+        for pair in pairs {
+            if let price = data[pair], let date = Base.generateRandomDate(daysBack: Int.random(in: 10..<20)) {
+                let d = Base.dateFormatter.string(from: date )
+                pendingOrders.append(  ( "MOCK_ORDER_\(pair)",pair,"\(Float.random(in: price.0..<price.1))","\(Float(price.2))",d) )
+            }
+        }
+        return pendingOrders
     }
 }

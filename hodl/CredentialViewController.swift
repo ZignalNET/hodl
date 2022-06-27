@@ -63,6 +63,8 @@ class CredentialViewController: BaseScrollViewController {
         let apikey = ApiKey(exchange.uppercased(), key, secret, password)
         if apikey.isValid(eo) {
             if KeyChainService.saveKey(exchange.uppercased(), apikey) {
+                NotificationCenter.default.post(name: .refreshGenericTableViewData, object: nil, userInfo: nil)
+                fetchAllExchanges(globalLocalCurrency)
                 UIAlertController.presentMessage("Credentials successfully saved", "Success") { action in
                     self.dismissViewController()
                 }

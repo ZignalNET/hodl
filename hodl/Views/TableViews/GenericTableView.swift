@@ -13,7 +13,8 @@ class GenericTableView<T, Cell: UITableViewCell>: UITableView, UITableViewDataSo
     typealias CellConfiguration         = (Cell, T) -> Cell
     typealias CellSelection             = (Int,Cell, T) -> Void
     typealias CellActions               = (IndexPath,Cell, T) -> [GenericTableSwipeMenuAction]?
-    typealias Callback                  = (GenericTableSwipeMenuAction,IndexPath,Cell?,T?) -> Bool
+    //typealias Callback                  = (GenericTableSwipeMenuAction,IndexPath,Cell?,T?) -> Bool
+    typealias Callback                  = (GenericTableSwipeMenuAction,IndexPath,Cell?,T?,GenericTableView<T,Cell>) -> Bool
     
     private var cellType: Cell.Type?
     private var models: [T] = []
@@ -69,7 +70,7 @@ class GenericTableView<T, Cell: UITableViewCell>: UITableView, UITableViewDataSo
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: Cell = tableView.dequeueReusableCell(forIndexPath: indexPath)
         let model = getModelAt(indexPath)
-        if self.callback?(.ConfigureCell,indexPath, cell, getModelAt(indexPath)) == false {
+        if self.callback?(.ConfigureCell,indexPath, cell, getModelAt(indexPath),self) == false {
             cell.onConfigureCell(cell: cell, model: model)
         }
         return cell
@@ -79,7 +80,7 @@ class GenericTableView<T, Cell: UITableViewCell>: UITableView, UITableViewDataSo
         tableView.deselectRow(at: indexPath, animated: true)
         let cell: Cell = tableView.dequeueReusableCell(forIndexPath: indexPath)
         resetChecks()
-        _ = self.callback?(.SelectCell,indexPath, cell, getModelAt(indexPath))
+        _ = self.callback?(.SelectCell,indexPath, cell, getModelAt(indexPath),self)
     }
     
     
@@ -93,7 +94,7 @@ class GenericTableView<T, Cell: UITableViewCell>: UITableView, UITableViewDataSo
             for action in swipeActions {
                 if action.isValid() {
                     let swipeAction = UIContextualAction(style: .normal, title:  action.Action, handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-                        _ = self.callback?(action, indexPath, cell, self.getModelAt(indexPath))
+                        _ = self.callback?(action, indexPath, cell, self.getModelAt(indexPath),self)
                         success(true)
                     })
                     swipeAction.backgroundColor = action.backgroundColor

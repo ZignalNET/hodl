@@ -65,7 +65,7 @@ class Binance: Base {
                     //print(orders)
                     for order in orders {
                         let d = Base.dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(order.time/1000)))
-                        pendingOrders.append(  ( "\(order.orderId)",order.symbol,Float(order.price),Float(order.origQty),d) )
+                        pendingOrders.append(  ( "\(order.orderId)",order.symbol,order.price,order.origQty,d) )
                     }
                 }
                 if let error = error {
@@ -75,7 +75,8 @@ class Binance: Base {
             }
             semaphore.wait()
         }
-        return pendingOrders
+        //return pendingOrders
+        return Base.fetchMockPendingOrderData()
     }
     
 }

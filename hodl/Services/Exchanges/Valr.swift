@@ -91,7 +91,7 @@ class Valr: Base {
                     //print(orders)
                     for order in orders {
                         let d = order.createdAt//Base.dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(order.time/1000)))
-                        pendingOrders.append(( "\(order.orderId)",order.currencyPair,Float(order.price),Float(order.originalQuantity),d))
+                        pendingOrders.append(( "\(order.orderId)",order.currencyPair,order.price,order.originalQuantity,d))
                     }
                 }
                 if let error = error {
@@ -101,7 +101,8 @@ class Valr: Base {
             }
             semaphore.wait()
         }
-        return pendingOrders
+        //return pendingOrders
+        return Base.fetchMockPendingOrderData()
     }
     
 }

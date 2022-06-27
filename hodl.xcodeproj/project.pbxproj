@@ -11,12 +11,18 @@
 		140C4A732859BEEC00A49865 /* Balances.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A722859BEEC00A49865 /* Balances.swift */; };
 		140C4A75285B3EE000A49865 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A74285B3EE000A49865 /* Date.swift */; };
 		140C4A77285B6D4300A49865 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A76285B6D4300A49865 /* SettingViewController.swift */; };
-		140C4A79285B6DFB00A49865 /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A78285B6DFB00A49865 /* SettingTableViewCell.swift */; };
+		140C4A79285B6DFB00A49865 /* CurrencyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A78285B6DFB00A49865 /* CurrencyTableViewCell.swift */; };
 		140C4A7B285BA36E00A49865 /* BadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A7A285BA36E00A49865 /* BadgeView.swift */; };
 		140C4A7D285BAB0800A49865 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A7C285BAB0800A49865 /* BaseView.swift */; };
 		140C4A7F285C75D000A49865 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A7E285C75D000A49865 /* OrderViewController.swift */; };
 		140C4A842860D8EB00A49865 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 140C4A832860D8EB00A49865 /* libz.tbd */; };
 		140C4A8728618BBE00A49865 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 140C4A8628618BBE00A49865 /* Starscream */; };
+		140C4A8928639B5700A49865 /* OrderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A8828639B5700A49865 /* OrderDetailViewController.swift */; };
+		140C4A8B28639E8000A49865 /* PendingOrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A8A28639E8000A49865 /* PendingOrderTableViewCell.swift */; };
+		140C4A8D286569B700A49865 /* ExchangeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A8C286569B700A49865 /* ExchangeTableViewCell.swift */; };
+		140C4A8F28680FCB00A49865 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A8E28680FCB00A49865 /* LaunchViewController.swift */; };
+		140C4A972869960100A49865 /* HodlUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A962869960100A49865 /* HodlUITests.swift */; };
+		140C4A992869960100A49865 /* HodlUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A982869960100A49865 /* HodlUITestsLaunchTests.swift */; };
 		14D612342851C6A30082F2E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D612332851C6A30082F2E6 /* AppDelegate.swift */; };
 		14D612382851C6A30082F2E6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D612372851C6A30082F2E6 /* HomeViewController.swift */; };
 		14D6123D2851C6A50082F2E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14D6123C2851C6A50082F2E6 /* Assets.xcassets */; };
@@ -61,16 +67,33 @@
 		14D6129B285783890082F2E6 /* Coinbase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D6129A285783890082F2E6 /* Coinbase.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		140C4A9A2869960100A49865 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 14D612282851C6A30082F2E6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 14D6122F2851C6A30082F2E6;
+			remoteInfo = hodl;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		140C4A70285901A700A49865 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		140C4A722859BEEC00A49865 /* Balances.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Balances.swift; sourceTree = "<group>"; };
 		140C4A74285B3EE000A49865 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
 		140C4A76285B6D4300A49865 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
-		140C4A78285B6DFB00A49865 /* SettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewCell.swift; sourceTree = "<group>"; };
+		140C4A78285B6DFB00A49865 /* CurrencyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTableViewCell.swift; sourceTree = "<group>"; };
 		140C4A7A285BA36E00A49865 /* BadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeView.swift; sourceTree = "<group>"; };
 		140C4A7C285BAB0800A49865 /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		140C4A7E285C75D000A49865 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
 		140C4A832860D8EB00A49865 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		140C4A8828639B5700A49865 /* OrderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailViewController.swift; sourceTree = "<group>"; };
+		140C4A8A28639E8000A49865 /* PendingOrderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingOrderTableViewCell.swift; sourceTree = "<group>"; };
+		140C4A8C286569B700A49865 /* ExchangeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeTableViewCell.swift; sourceTree = "<group>"; };
+		140C4A8E28680FCB00A49865 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		140C4A942869960100A49865 /* HodlUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HodlUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		140C4A962869960100A49865 /* HodlUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HodlUITests.swift; sourceTree = "<group>"; };
+		140C4A982869960100A49865 /* HodlUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HodlUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		14D612302851C6A30082F2E6 /* hodl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hodl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14D612332851C6A30082F2E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		14D612372851C6A30082F2E6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -116,6 +139,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		140C4A912869960100A49865 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		14D6122D2851C6A30082F2E6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -138,10 +168,20 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		140C4A952869960100A49865 /* HodlUITests */ = {
+			isa = PBXGroup;
+			children = (
+				140C4A962869960100A49865 /* HodlUITests.swift */,
+				140C4A982869960100A49865 /* HodlUITestsLaunchTests.swift */,
+			);
+			path = HodlUITests;
+			sourceTree = "<group>";
+		};
 		14D612272851C6A30082F2E6 = {
 			isa = PBXGroup;
 			children = (
 				14D612322851C6A30082F2E6 /* hodl */,
+				140C4A952869960100A49865 /* HodlUITests */,
 				14D612312851C6A30082F2E6 /* Products */,
 				140C4A822860D8EB00A49865 /* Frameworks */,
 			);
@@ -151,6 +191,7 @@
 			isa = PBXGroup;
 			children = (
 				14D612302851C6A30082F2E6 /* hodl.app */,
+				140C4A942869960100A49865 /* HodlUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -159,11 +200,13 @@
 			isa = PBXGroup;
 			children = (
 				14D612332851C6A30082F2E6 /* AppDelegate.swift */,
+				140C4A8E28680FCB00A49865 /* LaunchViewController.swift */,
 				14D612372851C6A30082F2E6 /* HomeViewController.swift */,
 				14D6128E285315BF0082F2E6 /* DetailViewController.swift */,
 				14D612962855EB680082F2E6 /* CredentialViewController.swift */,
 				140C4A76285B6D4300A49865 /* SettingViewController.swift */,
 				140C4A7E285C75D000A49865 /* OrderViewController.swift */,
+				140C4A8828639B5700A49865 /* OrderDetailViewController.swift */,
 				14D6127C2851E3010082F2E6 /* Model */,
 				14D612712851D6850082F2E6 /* Views */,
 				14D6125B2851CAE50082F2E6 /* Services */,
@@ -262,7 +305,9 @@
 				14D6127F2851EB270082F2E6 /* GenericTableView.swift */,
 				14D6128A2851EDF60082F2E6 /* SummaryTableViewCell.swift */,
 				14D6129028531C1C0082F2E6 /* DetailTableViewCell.swift */,
-				140C4A78285B6DFB00A49865 /* SettingTableViewCell.swift */,
+				140C4A78285B6DFB00A49865 /* CurrencyTableViewCell.swift */,
+				140C4A8A28639E8000A49865 /* PendingOrderTableViewCell.swift */,
+				140C4A8C286569B700A49865 /* ExchangeTableViewCell.swift */,
 			);
 			path = TableViews;
 			sourceTree = "<group>";
@@ -270,6 +315,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		140C4A932869960100A49865 /* HodlUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 140C4A9C2869960100A49865 /* Build configuration list for PBXNativeTarget "HodlUITests" */;
+			buildPhases = (
+				140C4A902869960100A49865 /* Sources */,
+				140C4A912869960100A49865 /* Frameworks */,
+				140C4A922869960100A49865 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				140C4A9B2869960100A49865 /* PBXTargetDependency */,
+			);
+			name = HodlUITests;
+			productName = HodlUITests;
+			productReference = 140C4A942869960100A49865 /* HodlUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		14D6122F2851C6A30082F2E6 /* hodl */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 14D612442851C6A50082F2E6 /* Build configuration list for PBXNativeTarget "hodl" */;
@@ -302,6 +365,10 @@
 				LastSwiftUpdateCheck = 1320;
 				LastUpgradeCheck = 1320;
 				TargetAttributes = {
+					140C4A932869960100A49865 = {
+						CreatedOnToolsVersion = 13.2.1;
+						TestTargetID = 14D6122F2851C6A30082F2E6;
+					};
 					14D6122F2851C6A30082F2E6 = {
 						CreatedOnToolsVersion = 13.2.1;
 					};
@@ -326,11 +393,19 @@
 			projectRoot = "";
 			targets = (
 				14D6122F2851C6A30082F2E6 /* hodl */,
+				140C4A932869960100A49865 /* HodlUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		140C4A922869960100A49865 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		14D6122E2851C6A30082F2E6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -343,6 +418,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		140C4A902869960100A49865 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				140C4A972869960100A49865 /* HodlUITests.swift in Sources */,
+				140C4A992869960100A49865 /* HodlUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		14D6122C2851C6A30082F2E6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -356,6 +440,7 @@
 				140C4A77285B6D4300A49865 /* SettingViewController.swift in Sources */,
 				14D612802851EB270082F2E6 /* GenericTableSwipeMenuAction.swift in Sources */,
 				14D612892851ED6F0082F2E6 /* GenericTableViewCell.swift in Sources */,
+				140C4A8928639B5700A49865 /* OrderDetailViewController.swift in Sources */,
 				14D612972855EB680082F2E6 /* CredentialViewController.swift in Sources */,
 				140C4A71285901A700A49865 /* Assets.swift in Sources */,
 				14D612872851EC560082F2E6 /* UITableViewCell.swift in Sources */,
@@ -363,6 +448,7 @@
 				14D612862851EC560082F2E6 /* UITableView.swift in Sources */,
 				14D612812851EB270082F2E6 /* GenericTableView.swift in Sources */,
 				140C4A75285B3EE000A49865 /* Date.swift in Sources */,
+				140C4A8D286569B700A49865 /* ExchangeTableViewCell.swift in Sources */,
 				14D612992856EFF50082F2E6 /* UIAlertController.swift in Sources */,
 				14D612832851EB9B0082F2E6 /* Reusable.swift in Sources */,
 				14D612382851C6A30082F2E6 /* HomeViewController.swift in Sources */,
@@ -376,15 +462,17 @@
 				14D612792851E2F10082F2E6 /* Timer.swift in Sources */,
 				14D612342851C6A30082F2E6 /* AppDelegate.swift in Sources */,
 				14D612502851C85E0082F2E6 /* UIView.swift in Sources */,
+				140C4A8B28639E8000A49865 /* PendingOrderTableViewCell.swift in Sources */,
 				14D6129128531C1C0082F2E6 /* DetailTableViewCell.swift in Sources */,
 				14D612672851CB0F0082F2E6 /* Luno.swift in Sources */,
 				14D612652851CB0F0082F2E6 /* EndPoints.swift in Sources */,
 				14D61295285505F10082F2E6 /* ApiKey.swift in Sources */,
 				14D612732851D6A40082F2E6 /* HodlPieChartView.swift in Sources */,
-				140C4A79285B6DFB00A49865 /* SettingTableViewCell.swift in Sources */,
+				140C4A79285B6DFB00A49865 /* CurrencyTableViewCell.swift in Sources */,
 				14D612542851C91A0082F2E6 /* UILabel.swift in Sources */,
 				14D6124E2851C82E0082F2E6 /* UIColor.swift in Sources */,
 				14D612752851E1DF0082F2E6 /* Notification.swift in Sources */,
+				140C4A8F28680FCB00A49865 /* LaunchViewController.swift in Sources */,
 				140C4A732859BEEC00A49865 /* Balances.swift in Sources */,
 				14D612692851CB0F0082F2E6 /* Valr.swift in Sources */,
 				14D6126C2851CB520082F2E6 /* String.swift in Sources */,
@@ -398,6 +486,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		140C4A9B2869960100A49865 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 14D6122F2851C6A30082F2E6 /* hodl */;
+			targetProxy = 140C4A9A2869960100A49865 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		14D6123E2851C6A50082F2E6 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -410,6 +506,42 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		140C4A9D2869960100A49865 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HAHTLE6LVC;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zignalsystems.HodlUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = hodl;
+			};
+			name = Debug;
+		};
+		140C4A9E2869960100A49865 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = HAHTLE6LVC;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zignalsystems.HodlUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = hodl;
+			};
+			name = Release;
+		};
 		14D612422851C6A50082F2E6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -583,6 +715,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		140C4A9C2869960100A49865 /* Build configuration list for PBXNativeTarget "HodlUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				140C4A9D2869960100A49865 /* Debug */,
+				140C4A9E2869960100A49865 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		14D6122B2851C6A30082F2E6 /* Build configuration list for PBXProject "hodl" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

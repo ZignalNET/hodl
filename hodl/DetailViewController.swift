@@ -9,14 +9,16 @@ import UIKit
 
 class DetailViewController: BaseScrollViewController {
     private var exchange: String?
+    private var pendingOrders: PendingOrders = []
     private var data: (String,(Float,AssetsBalances?,Exchanges?))?
     private var tabledata: [(String,String,String)] = []
     private var portfolio: (Float,Float) = (0.0,0.0)
     
-    convenience init(exchange: String = "", data: (String,(Float,AssetsBalances?,Exchanges?))? = nil ) {
+    convenience init(exchange: String = "", data: (String,(Float,AssetsBalances?,Exchanges?))? = nil, _ pendingOrders: PendingOrders = [] ) {
         self.init()
         
         self.exchange = exchange
+        self.pendingOrders = pendingOrders
         self.data = data
         if let data = data {portfolio.0 = data.1.0}
     }
@@ -36,8 +38,9 @@ class DetailViewController: BaseScrollViewController {
                 for d in tabledata { temp.append((lookupAsset(d.key), d.value.0, d.value.1)) }
                 for d in temp.sorted(by: {$0.2 > $1.2}) { self.tabledata.append((d.0, "\(d.1)".toCurrency, "\(d.2)".toCurrency)) }
             }
-            let table = GenericTableView(DetailTableViewCell.self, self.tabledata,self.view.frame.height,nil ) {
-                (action,index,cell,data) in
+            let tableHeight: CGFloat =  220//self.view.frame.height
+            let table = GenericTableView(DetailTableViewCell.self, self.tabledata,tableHeight,nil ) {
+                (action,index,cell,data,table) in
                 if action == .ConfigureCell, index.row == 0 { cell?.rePaintHeader() }
                 return false
             }
@@ -45,6 +48,13 @@ class DetailViewController: BaseScrollViewController {
             getStackView().addArrangedSubview(createSummaryView())
             getStackView().addArrangedSubview( UIView(10) )
             getStackView().addArrangedSubview(table)
+            getStackView().addArrangedSubview( UIView(15) )
+            
+            if self.pendingOrders.count > 0 , let table = createPendingOderTable() {
+                getStackView().addArrangedSubview(UILabel( "  Pending Orders", .left, 16, .medium, .defaultAppStrongColor))
+                getStackView().addArrangedSubview( UIView(10) )
+                getStackView().addArrangedSubview( table )
+            }
             
             self.navigationItem.rightBarButtonItem  =  UIBarButtonItem(image: UIImage(named: "icon.key"), style: .plain, target: self, action: #selector(openCredentials))
         }
@@ -60,9 +70,9 @@ class DetailViewController: BaseScrollViewController {
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         formatter.locale = Locale.current
         let v = UIView(60)
-        let caption = UILabel( "Portfolio", .left, 16, .medium, .lightGray)
+        let caption = UILabel( "Portfolio", .left, 16, .medium, .mediumSeaGreenColor)
         let value   = UILabel( "\(globalLocalCurrency) "+"\(portfolio.0)".toCurrency,       .left, 16, .medium, .white)
-        let date = UILabel("\(formatter.string(from: Date()))", .left, 10, .light, .defaultLineColor)
+        let date = UILabel("\(formatter.string(from: Date()))", .left, 10, .light, .lightText)
         v.addSubview(caption)
         v.addSubview(value)
         v.addSubview(date)
@@ -77,5 +87,17 @@ class DetailViewController: BaseScrollViewController {
         date.bottomAnchor.constraint(equalTo: value.topAnchor  ).isActive = true
         
         return v
+    }
+    
+    private func createPendingOderTable() -> GenericTableView<Any, PendingOrderTableViewCell>?{
+        if pendingOrders.count > 0 {
+            var order = pendingOrders
+            order.insert(("HEADER","Pair","","","Date"), at: 0)  //table header ...
+            return GenericTableView(PendingOrderTableViewCell.self, order,400,nil ) {
+                (action,index,cell,data,table) in
+                return false
+            }
+        }
+        return nil
     }
 }

@@ -12,7 +12,7 @@ let exchanges = Exchanges.singleInstance
 let ExchangeObjects: [String: Base] = ["LUNO":Luno.singleInstance,"VALR":Valr.singleInstance,"BINANCE":Binance.singleInstance,"COINBASE":Coinbase.singleInstance]
 
 var globalLocalCurrency: String {
-    get { return UserDefaults.standard.string(forKey: "LOCALCURRENCY") ?? "ZAR" }
+    get { return UserDefaults.standard.string(forKey: "LOCALCURRENCY") ?? "EUR" }
     set {  UserDefaults.standard.set(newValue, forKey: "LOCALCURRENCY")  }
 }
 
@@ -57,6 +57,14 @@ func fetchExchanges() -> [Exchanges] {
 
 func initModels() {
     initExchanges()
+}
+
+func fetchConnectedExchanges() -> [String] {
+    var exchanges: [String] = []
+    for exchange in fetchExchanges() {
+        if exchange.hasApiKey() { exchanges.append(exchange["name"] as! String) }
+    }
+    return exchanges
 }
 
 func fetchAllExchanges(_ localFiat: String) {
@@ -115,66 +123,6 @@ func fetchAllExchanges(_ localFiat: String) {
         }
     }
 }
-
-func fetchExchangeData(_ localFiat: String ) {
-    guard isConnectedToInternet() else { return }
-    //TODO: Full rewrite of this function is a MUST; what if I have 1000 exchanges ????
-    DispatchQueue.global(qos: .background).async {
-        let luno    = Luno.singleInstance.fetchBalances(fiat: localFiat)
-        let binance = Binance.singleInstance.fetchBalances(fiat: localFiat)
-        let valr    = Valr.singleInstance.fetchBalances(fiat: localFiat)
-        let coinbase = Coinbase.singleInstance.fetchBalances(fiat: localFiat)
-        let total   = [luno.0,binance.0,valr.0, coinbase.0].reduce(0, +)
-        let btc     = Base.convertAssets(localFiat, "BTC", false)
-        let local   = Base.convertAssets("BTC", "\(localFiat),USD", false)
-        
-        let names = [luno,binance,valr,coinbase].map({ $0.1?.map({ $0.key }) }).filter({ $0 != nil })
-        for name in names { Assets.add(name) }
-        
-        let exchanges = [luno,binance,valr,coinbase].filter({ $0.1 != nil && $0.2 != nil }).map({ ($0.2! , $0.1 ?? [:]) })
-        for exchange in exchanges {
-            if let eid = exchange.0["id"] as? Int32 {
-                for asset in exchange.1 {
-                    if let a = Assets.singleInstance.find(asset.key), let aid = a["id"] as? Int32 {
-                        Balances.singleInstance.add(eid, aid, localFiat, String(format:"%.10f",asset.value.0), String(format:"%.10f",asset.value.1))
-                    }
-                }
-            }
-        }
-            
-        DispatchQueue.main.async {
-            //On main thread
-            if let btc = btc?.first, let local = local, let btcUSD = local["USD"] as? NSNumber, let btcLocal = local[localFiat] as? NSNumber{
-                var userObject: [String:Float] = [:]
-                var userInfo:   [String:Float] = [:]
-                var details:    [String:(Float,AssetsBalances?,Exchanges?)]  = [:]
-                userInfo["localtotal"]  = total
-                userInfo["btctotal"]    = total * (btc.value as! NSNumber).floatValue
-                userInfo["btcUSD"]      = btcUSD.floatValue
-                userInfo["btcLocal"]    = btcLocal.floatValue
-                
-                userObject["Luno"]        = luno.0
-                userObject["Binance"]     = binance.0
-                userObject["Valr"]        = valr.0
-                userObject["Coinbase"]    = coinbase.0
-                
-                details["LUNO"]           = luno
-                details["BINANCE"]        = binance
-                details["VALR"]           = valr
-                details["Coinbase"]       = coinbase
-                
-                NotificationCenter.default.post(name: .refreshExchangeDataTotals, object: userObject, userInfo: userInfo)
-                NotificationCenter.default.post(name: .refreshExchangeDataDetails, object: details, userInfo: nil)
-            }
-        }
-    }
-}
-
-
-func onTimerExchangeCallback(_ timer: Timer ) {
-    fetchExchangeData(globalLocalCurrency)
-}
-
 
 func isConnectedToInternet() -> Bool {
     var zeroAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))

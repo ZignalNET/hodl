@@ -8,6 +8,10 @@
 
 import UIKit
 
+enum LinePosition: Int {
+    case top
+    case bottom
+}
 
 extension UIView {
     
@@ -29,6 +33,7 @@ extension UIView {
         self.layer.borderColor = borderColor.cgColor
     }
     
+    
     public func setBorder(_ borderColor: UIColor = UIColor.clear, _ borderWidth: CGFloat = 1.0) {
         self.layer.borderColor = borderColor.cgColor
         self.layer.borderWidth = borderWidth
@@ -38,7 +43,20 @@ extension UIView {
         self.layer.borderColor = borderColor.cgColor
     }
     
+    func addLine(to position: LinePosition = .bottom, _ color: UIColor = UIColor.defaultLineColor, _ height: CGFloat = 0.2) {
+        let line = UIView(height)
+        addSubview(line)
+        line.backgroundColor = color
+        line.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        switch( position ) {
+            case .top: line.topAnchor.constraint(equalTo: self.topAnchor).isActive = true;break
+            case .bottom: line.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true;break
+        }
+    }
+
 }
+
+
 
 
 extension UIView {
