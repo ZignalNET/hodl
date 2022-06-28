@@ -113,6 +113,7 @@ class HomeViewController: BaseScrollViewController {
             }
             return false
         }
+        summaryTableView.accessibilityIdentifier = "summaryTableView"
     }
     
     private func createSummaryHeader() -> UIView {

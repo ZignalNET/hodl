@@ -42,6 +42,10 @@ class Base: NSObject, BaseMethods, WebSocketDelegate {
     private var webSocket: WebSocket?
     private(set) var isConnectedToWebSocket = false
     
+    internal var apiKey: ApiKey? { get  { return hasApiKeys() } }
+    
+
+    
     static var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"

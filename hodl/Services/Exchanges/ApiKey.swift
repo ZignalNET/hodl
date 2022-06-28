@@ -41,5 +41,9 @@ struct ApiKey: Codable {
         }
         return isValid
     }
+    
+    func remove() -> Bool {
+        return KeyChainService.deleteKey(self.exchange.uppercased())
+    }
 }
 

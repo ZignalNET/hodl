@@ -18,7 +18,7 @@ class SettingViewController: BaseScrollViewController {
         // Do any additional setup after loading the view.
         self.title      = "Settings"
         exchangeTableView   = createTable(ExchangeTableViewCell.self, []   ,180,tableCallBack)
-        currencyTableView   = createTable(CurrencyTableViewCell.self, []   ,200,tableCallBack)
+        currencyTableView   = createTable(CurrencyTableViewCell.self, []   ,250,tableCallBack)
     
         getStackView().addArrangedSubview(UILabel( "  Connected Exchanges", .left, 16, .medium, .mediumSeaGreenColor))
         getStackView().addArrangedSubview(UIView(10))

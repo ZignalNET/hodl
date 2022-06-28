@@ -21,8 +21,8 @@
 		140C4A8B28639E8000A49865 /* PendingOrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A8A28639E8000A49865 /* PendingOrderTableViewCell.swift */; };
 		140C4A8D286569B700A49865 /* ExchangeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A8C286569B700A49865 /* ExchangeTableViewCell.swift */; };
 		140C4A8F28680FCB00A49865 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A8E28680FCB00A49865 /* LaunchViewController.swift */; };
-		140C4A972869960100A49865 /* HodlUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A962869960100A49865 /* HodlUITests.swift */; };
-		140C4A992869960100A49865 /* HodlUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A982869960100A49865 /* HodlUITestsLaunchTests.swift */; };
+		140C4AA228699D3A00A49865 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4AA128699D3A00A49865 /* SnapshotHelper.swift */; };
+		140C4AA428699D7500A49865 /* HodlTestCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4AA328699D7500A49865 /* HodlTestCases.swift */; };
 		14D612342851C6A30082F2E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D612332851C6A30082F2E6 /* AppDelegate.swift */; };
 		14D612382851C6A30082F2E6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D612372851C6A30082F2E6 /* HomeViewController.swift */; };
 		14D6123D2851C6A50082F2E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14D6123C2851C6A50082F2E6 /* Assets.xcassets */; };
@@ -92,8 +92,8 @@
 		140C4A8C286569B700A49865 /* ExchangeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExchangeTableViewCell.swift; sourceTree = "<group>"; };
 		140C4A8E28680FCB00A49865 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		140C4A942869960100A49865 /* HodlUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HodlUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		140C4A962869960100A49865 /* HodlUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HodlUITests.swift; sourceTree = "<group>"; };
-		140C4A982869960100A49865 /* HodlUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HodlUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		140C4AA128699D3A00A49865 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
+		140C4AA328699D7500A49865 /* HodlTestCases.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HodlTestCases.swift; sourceTree = "<group>"; };
 		14D612302851C6A30082F2E6 /* hodl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = hodl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14D612332851C6A30082F2E6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		14D612372851C6A30082F2E6 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -171,8 +171,8 @@
 		140C4A952869960100A49865 /* HodlUITests */ = {
 			isa = PBXGroup;
 			children = (
-				140C4A962869960100A49865 /* HodlUITests.swift */,
-				140C4A982869960100A49865 /* HodlUITestsLaunchTests.swift */,
+				140C4AA128699D3A00A49865 /* SnapshotHelper.swift */,
+				140C4AA328699D7500A49865 /* HodlTestCases.swift */,
 			);
 			path = HodlUITests;
 			sourceTree = "<group>";
@@ -422,8 +422,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				140C4A972869960100A49865 /* HodlUITests.swift in Sources */,
-				140C4A992869960100A49865 /* HodlUITestsLaunchTests.swift in Sources */,
+				140C4AA428699D7500A49865 /* HodlTestCases.swift in Sources */,
+				140C4AA228699D3A00A49865 /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

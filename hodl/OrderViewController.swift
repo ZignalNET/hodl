@@ -32,7 +32,7 @@ class OrderViewController: BaseScrollViewController {
         let wrapper = UIView(60)
         let label   = UILabel( exchange.0.capitalized, .left, 16, .medium, .lightGray)
         let image   = UIImageView(exchange.0.lowercased(), 15.0, 1.0, .clear)
-        let badge   = BadgeView("\(exchange.1.count)",.defaultAppStrongColor,.tableCellColor, 40, 40,.white.withAlphaComponent(0.2), 16)
+        let badge   = BadgeView("\(exchange.1.count)",.white,.tableCellColor, 40, 40,.white.withAlphaComponent(0.2), 16)
         
         wrapper.addSubview(label)
         wrapper.addSubview(image)

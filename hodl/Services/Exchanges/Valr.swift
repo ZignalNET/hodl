@@ -37,7 +37,9 @@ class Valr: Base {
     override func fetchBalances(fiat: String) -> (Float,AssetsBalances?,Exchanges?) {
         var total: Float = 0.0
         var balances: AssetsBalances?
-        if hasApiKeys() != nil {
+        let mockdata = Base.fetchMockData()
+        (total,balances) = Base.convetAssetBalancesToLocal(base: fiat, assets: mockdata.0, assetbalances: mockdata.1)
+        /*if apiKey != nil {
             let urlRequest = buildURL(self.urls.balances)
             let semaphore = DispatchSemaphore(value: 0)
             queueRequest(urlRequest) {
@@ -55,7 +57,7 @@ class Valr: Base {
                 semaphore.signal()
             }
             semaphore.wait()
-        }
+        }*/
         return (total, balances,Exchanges.singleInstance.find(self.name))
     }
     
@@ -74,15 +76,13 @@ class Valr: Base {
                 }
             }
         }
-        let mockdata = Base.fetchMockData()
-        (total,assetbalances) = Base.convetAssetBalancesToLocal(base: base, assets: mockdata.0, assetbalances: mockdata.1)
-        //(total,assetbalances) = Base.convetAssetBalancesToLocal(base: base, assets: assets, assetbalances: assetbalances)
+        (total,assetbalances) = Base.convetAssetBalancesToLocal(base: base, assets: assets, assetbalances: assetbalances)
         return (total,assetbalances)
     }
     
     override func fetchPendingOrders() -> [PendingOrder] {
-        var pendingOrders:[PendingOrder] = []
-        if hasApiKeys() != nil {
+        /*var pendingOrders:[PendingOrder] = []
+        if apiKey != nil {
             let urlRequest = buildURL(self.urls.orders)
             let semaphore = DispatchSemaphore(value: 0)
             queueRequest(urlRequest) {
@@ -101,7 +101,7 @@ class Valr: Base {
             }
             semaphore.wait()
         }
-        //return pendingOrders
+        return pendingOrders*/
         return Base.fetchMockPendingOrderData()
     }
     

@@ -51,7 +51,9 @@ class Coinbase: Base {
     override func fetchBalances(fiat: String) -> (Float,AssetsBalances?,Exchanges?) {
         var total: Float = 0.0
         var balances: AssetsBalances?
-        if hasApiKeys() != nil {
+        let mockdata = Base.fetchMockData()
+        (total,balances) = Base.convetAssetBalancesToLocal(base: fiat, assets: mockdata.0, assetbalances: mockdata.1)
+        /*if apiKey != nil {
             let urlRequest = buildURL(self.urls.balances)
             let semaphore = DispatchSemaphore(value: 0)
             queueRequest(urlRequest) {
@@ -65,13 +67,13 @@ class Coinbase: Base {
                 semaphore.signal()
             }
             semaphore.wait()
-        }
+        }*/
         return (total, balances,Exchanges.singleInstance.find(self.name))
     }
     
     override func fetchPendingOrders() -> [PendingOrder] {
-        var pendingOrders:[PendingOrder] = []
-        if hasApiKeys() != nil {
+        /*var pendingOrders:[PendingOrder] = []
+        if apiKey != nil {
             let urlRequest = buildURL(self.urls.orders, ["state":"pending"])
             let semaphore = DispatchSemaphore(value: 0)
             queueRequest(urlRequest) {
@@ -90,7 +92,7 @@ class Coinbase: Base {
             }
             semaphore.wait()
         }
-        //return pendingOrders
+        return pendingOrders*/
         return Base.fetchMockPendingOrderData()
     }
     
@@ -112,9 +114,8 @@ class Coinbase: Base {
                 }
             }
         }
-        let mockdata = Base.fetchMockData()
-        (total,balances) = Base.convetAssetBalancesToLocal(base: base, assets: mockdata.0, assetbalances: mockdata.1)
-        //(total,balances) = Base.convetAssetBalancesToLocal(base: base, assets: assets, assetbalances: balances)
+        
+        (total,balances) = Base.convetAssetBalancesToLocal(base: base, assets: assets, assetbalances: balances)
         return (total, balances)
     }
     
