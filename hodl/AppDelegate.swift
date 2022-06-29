@@ -26,6 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = BaseNavigationController( rootViewController: viewController )
         window?.makeKeyAndVisible()
         
+        //KeyChainService.iterateKeychainItems(true, true)
+        
         if fetchConnectedExchanges().count == 0 {
             viewController.navigationController?.pushViewController(SettingViewController(), animated: true)
         }

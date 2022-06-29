@@ -114,7 +114,7 @@ extension UIView {
         return UIView.createStackView()
     }
     
-    convenience init(_ caption: Any, _ placeHolder: String, _ textView: UITextField? ) {
+    convenience init(_ caption: Any, _ placeHolder: String, _ textView: UITextField?, _ topView: UIView? = nil ) {
         self.init()
         self.heightAnchor.constraint(equalToConstant: 30).isActive = true
         self.backgroundColor = .clear
@@ -155,6 +155,13 @@ extension UIView {
             textView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
             textView.widthAnchor.constraint(equalTo:   widthAnchor, multiplier: 0.7).isActive = true
             textView.heightAnchor.constraint(equalTo:  heightAnchor).isActive = true
+        }
+        
+        if let topView = topView, let textView = textView {
+            topView.translatesAutoresizingMaskIntoConstraints = false
+            addSubview(topView)
+            topView.leadingAnchor.constraint(equalTo: textView.leadingAnchor).isActive = true
+            topView.bottomAnchor.constraint(equalTo: textView.topAnchor).isActive = true
         }
     }
     

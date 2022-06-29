@@ -31,8 +31,8 @@ class CredentialViewController: BaseScrollViewController {
             getStackView().addArrangedSubview( UIView("Key", "Enter API Key", apiKey)  )
             getStackView().addArrangedSubview( UIView(10) )
             getStackView().addArrangedSubview( UIView("Secret", "Enter API Secret", apiSecret)  )
-            getStackView().addArrangedSubview( UIView(10) )
-            getStackView().addArrangedSubview( UIView("Passphrase", "Enter API Passphrase", apiPassword)  )
+            getStackView().addArrangedSubview( UIView(20) )
+            getStackView().addArrangedSubview( UIView("Passphrase", "Enter API Passphrase", apiPassword,UILabel( "Ex. Coinbase   ", .left, 12, .regular, .defaultLineColor))  )
            
             createSaveButton()
             if let data: ApiKey = KeyChainService.retrieveKey(exchange.uppercased()) {

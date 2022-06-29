@@ -28,6 +28,8 @@ class SettingViewController: BaseScrollViewController {
         getStackView().addArrangedSubview(UIView(10))
         getStackView().addArrangedSubview(currencyTableView)
         
+        exchangeTableView.accessibilityIdentifier = "settings_exchangeTableView"
+        
         registerNotifications()
         reloadData()
     }

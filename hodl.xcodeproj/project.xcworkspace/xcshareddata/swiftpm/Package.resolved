@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "LightweightCharts",
+        "repositoryURL": "https://github.com/tradingview/LightweightChartsIOS",
+        "state": {
+          "branch": null,
+          "revision": "dc5b245798e13c32907576a8c2b9c458d6cf688a",
+          "version": "3.8.0"
+        }
+      },
+      {
         "package": "LiteDB",
         "repositoryURL": "https://github.com/ZignalNET/LiteDB",
         "state": {

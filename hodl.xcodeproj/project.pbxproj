@@ -23,6 +23,7 @@
 		140C4A8F28680FCB00A49865 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4A8E28680FCB00A49865 /* LaunchViewController.swift */; };
 		140C4AA228699D3A00A49865 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4AA128699D3A00A49865 /* SnapshotHelper.swift */; };
 		140C4AA428699D7500A49865 /* HodlTestCases.swift in Sources */ = {isa = PBXBuildFile; fileRef = 140C4AA328699D7500A49865 /* HodlTestCases.swift */; };
+		140C4AA7286C270500A49865 /* LightweightCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 140C4AA6286C270500A49865 /* LightweightCharts */; };
 		14D612342851C6A30082F2E6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D612332851C6A30082F2E6 /* AppDelegate.swift */; };
 		14D612382851C6A30082F2E6 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D612372851C6A30082F2E6 /* HomeViewController.swift */; };
 		14D6123D2851C6A50082F2E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14D6123C2851C6A50082F2E6 /* Assets.xcassets */; };
@@ -150,6 +151,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				140C4AA7286C270500A49865 /* LightweightCharts in Frameworks */,
 				140C4A842860D8EB00A49865 /* libz.tbd in Frameworks */,
 				14D612572851CA610082F2E6 /* LiteDB in Frameworks */,
 				14D6125A2851CA820082F2E6 /* Charts in Frameworks */,
@@ -350,6 +352,7 @@
 				14D612562851CA610082F2E6 /* LiteDB */,
 				14D612592851CA820082F2E6 /* Charts */,
 				140C4A8628618BBE00A49865 /* Starscream */,
+				140C4AA6286C270500A49865 /* LightweightCharts */,
 			);
 			productName = hodl;
 			productReference = 14D612302851C6A30082F2E6 /* hodl.app */;
@@ -387,6 +390,7 @@
 				14D612552851CA610082F2E6 /* XCRemoteSwiftPackageReference "LiteDB" */,
 				14D612582851CA820082F2E6 /* XCRemoteSwiftPackageReference "Charts" */,
 				140C4A8528618BBE00A49865 /* XCRemoteSwiftPackageReference "Starscream" */,
+				140C4AA5286C270500A49865 /* XCRemoteSwiftPackageReference "LightweightChartsIOS" */,
 			);
 			productRefGroup = 14D612312851C6A30082F2E6 /* Products */;
 			projectDirPath = "";
@@ -753,6 +757,14 @@
 				minimumVersion = 4.0.0;
 			};
 		};
+		140C4AA5286C270500A49865 /* XCRemoteSwiftPackageReference "LightweightChartsIOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tradingview/LightweightChartsIOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		14D612552851CA610082F2E6 /* XCRemoteSwiftPackageReference "LiteDB" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ZignalNET/LiteDB";
@@ -776,6 +788,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 140C4A8528618BBE00A49865 /* XCRemoteSwiftPackageReference "Starscream" */;
 			productName = Starscream;
+		};
+		140C4AA6286C270500A49865 /* LightweightCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 140C4AA5286C270500A49865 /* XCRemoteSwiftPackageReference "LightweightChartsIOS" */;
+			productName = LightweightCharts;
 		};
 		14D612562851CA610082F2E6 /* LiteDB */ = {
 			isa = XCSwiftPackageProductDependency;

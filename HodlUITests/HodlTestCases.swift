@@ -29,10 +29,65 @@ class HodlTestCases: XCTestCase {
     func testMain() throws {
         //print(app.debugDescription)
         sleep(10)
-        snapshot("01-mainview")
+        snapshot("01-home")
         app.tables["summaryTableView"].cells.firstMatch.tap()
-        snapshot("02-mainview")
+        snapshot("02-home")
     }
     
+    
+    //self.navigationItem.leftBarButtonItem?.accessibilityIdentifier = "rightBarButtonItem_Settings"
+    func testSettings() throws {
+        sleep(10)
+        let settingNavBarButton = app.navigationBars.buttons["rightBarButtonItem_Settings"]
+        if settingNavBarButton.exists {
+            settingNavBarButton.tap()
+            snapshot("01-settings")
+        }
+    }
+    
+    func testPendingOrders() throws {
+        sleep(10)
+        let img = app.images["img_pendingOrderView"]
+        if img.exists {
+            img.tap()
+            snapshot("01-pendingorders")
+            sleep(3)
+            let details = app.otherElements["pendingOrderDetailView"].firstMatch
+            if details.exists {
+                details.tap()
+                sleep(2)
+                snapshot("02-pendingorders")
+            }
+        }
+    }
+    
+    func testCedentials() throws {
+        sleep(1)
+        snapshot("01-credentials")
+        let c = app.tables["settings_exchangeTableView"].cells.allElementsBoundByIndex[2]
+        if c.exists {
+            c.tap()
+            snapshot("02-credentials")
+        }
+    }
+    
+    func testPieTap() throws {
+        let exchanges = ["Luno","Binance","Valr","Coinbase"]
+        sleep(10)
+        print(app.debugDescription)
+        var i = 0
+        for exchange in exchanges {
+            let predicate = NSPredicate(format: "label CONTAINS[c] '\(exchange)'")
+            let o = app.otherElements.containing(predicate)
+            let m = o.element.firstMatch
+            if m.exists  {
+                m.tap()
+                sleep(1)
+                snapshot("02-piechart-\(i+1)")
+                i += 1
+            }
+        }
+        
+    }
 
 }

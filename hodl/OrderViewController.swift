@@ -56,6 +56,8 @@ class OrderViewController: BaseScrollViewController {
             self.navigationController?.pushViewController(OrderDetailViewController(exchange), animated: true)
         }
         
+        wrapper.accessibilityIdentifier = "pendingOrderDetailView"
+        
         return wrapper
     }
 

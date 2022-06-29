@@ -39,11 +39,13 @@ class HomeViewController: BaseScrollViewController {
         registerNotifications()
         
         self.navigationItem.rightBarButtonItem  =  UIBarButtonItem(image: UIImage(named: "icon.extended"), style: .plain, target: self, action: #selector(openSettings))
+        self.navigationItem.rightBarButtonItem?.accessibilityIdentifier = "rightBarButtonItem_Settings"
         
         let button = UIButton(frame: CGRect(x: 0, y: 0, width: 32, height: 32)) // Create new button & set its frame
         button.setImage(#imageLiteral(resourceName: "icon.refresh"), for: .normal) // Assign an image
         button.addTarget(self, action: #selector(self.refreshData), for: .touchUpInside)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: button)
+        self.navigationItem.leftBarButtonItem?.accessibilityIdentifier = "leftBarButtonItem_Settings"
         
         refreshData()
     }
@@ -154,6 +156,7 @@ class HomeViewController: BaseScrollViewController {
         let wrapper = UIView(80)
         let label   = UILabel( "Pending Orders", .left, 16, .medium, .white)
         let action  = UIImageView("icon.right")
+        action.accessibilityIdentifier = "img_pendingOrderView"
         let v = createInner()
         
         wrapper.addSubview(label)
