@@ -62,8 +62,9 @@ Xcode 13.2, IOS 13.0
 
 
 # Package dependencies
-* LiteDB ==> https://github.com/ZignalNET/LiteDB.git My SQLITE3 IOS Swift wrapper 
-* Charts ==> https://github.com/ZignalNET/LiteDB.git
+* LiteDB     ==> https://github.com/ZignalNET/LiteDB.git My SQLITE3 IOS Swift wrapper 
+* Charts     ==> https://github.com/ZignalNET/LiteDB.git
+* StarScream ==> https://github.com/daltoniam/Starscream.git For websocket connection which Im working on
 
 
 
