@@ -200,13 +200,6 @@
 			isa = PBXGroup;
 			children = (
 				14D612332851C6A30082F2E6 /* AppDelegate.swift */,
-				140C4A8E28680FCB00A49865 /* LaunchViewController.swift */,
-				14D612372851C6A30082F2E6 /* HomeViewController.swift */,
-				14D6128E285315BF0082F2E6 /* DetailViewController.swift */,
-				14D612962855EB680082F2E6 /* CredentialViewController.swift */,
-				140C4A76285B6D4300A49865 /* SettingViewController.swift */,
-				140C4A7E285C75D000A49865 /* OrderViewController.swift */,
-				140C4A8828639B5700A49865 /* OrderDetailViewController.swift */,
 				14D6127C2851E3010082F2E6 /* Model */,
 				14D612712851D6850082F2E6 /* Views */,
 				14D6125B2851CAE50082F2E6 /* Services */,
@@ -222,6 +215,13 @@
 		14D612472851C7840082F2E6 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				140C4A8E28680FCB00A49865 /* LaunchViewController.swift */,
+				14D612372851C6A30082F2E6 /* HomeViewController.swift */,
+				14D6128E285315BF0082F2E6 /* DetailViewController.swift */,
+				14D612962855EB680082F2E6 /* CredentialViewController.swift */,
+				140C4A76285B6D4300A49865 /* SettingViewController.swift */,
+				140C4A7E285C75D000A49865 /* OrderViewController.swift */,
+				140C4A8828639B5700A49865 /* OrderDetailViewController.swift */,
 				14D612492851C7A70082F2E6 /* BaseNavigationController.swift */,
 				14D612482851C7A70082F2E6 /* BaseScrollViewController.swift */,
 			);

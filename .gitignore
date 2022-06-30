@@ -1,4 +1,6 @@
 Images/
 .DS_Store
 fastlane/
+www/henv/
+henv/
 
