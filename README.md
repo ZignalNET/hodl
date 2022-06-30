@@ -1,5 +1,5 @@
 # hodl
-Hodl - IOS App for tracking crypto portfolio across exchanges
+Hodl - IOS Swift App for tracking crypto portfolio across exchanges
 
 # Screenshots
 
@@ -57,15 +57,23 @@ Currently, its supports the following exchanges
 </table>
 
 # Development environments
-
+```
 Xcode 13.2, IOS 13.0 
-
+```
 
 # Package dependencies
 * LiteDB     ==> https://github.com/ZignalNET/LiteDB.git My SQLITE3 IOS Swift wrapper 
 * Charts     ==> https://github.com/ZignalNET/LiteDB.git
 * StarScream ==> https://github.com/daltoniam/Starscream.git For websocket connection which Im working on
 
+# Todos
+* Add more exchanges
+* Add more local currencies. Thanks to min-api cryptocompare guys https://min-api.cryptocompare.com/
+
+# Costs
+```
+FREE as in FREE speech. But if you have 100% remote contract jobs available for me, drop me an email emmanuel@zignal.net
+```
 
 # License
 
