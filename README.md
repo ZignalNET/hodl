@@ -56,6 +56,14 @@ Currently, its supports the following exchanges
   </tbody>
 </table>
 
+# Development environments
+
+Xcode 13.2, IOS 13.0 
+
+
+# Package dependencies
+
+
 
 
 
