@@ -62,7 +62,7 @@ Xcode 13.2, IOS 13.0
 
 
 # Package dependencies
-
+LiteDB; my SQLITE3 IOS Swift wrapper ==> https://github.com/ZignalNET/LiteDB.git
 
 
 
