@@ -19,7 +19,10 @@ class SettingViewController: BaseScrollViewController {
         self.title      = "Settings"
         exchangeTableView   = createTable(ExchangeTableViewCell.self, []   ,180,tableCallBack)
         currencyTableView   = createTable(CurrencyTableViewCell.self, []   ,250,tableCallBack)
-    
+        
+        getStackView().addArrangedSubview(UIView(10))
+        getStackView().addArrangedSubview(UILabel( "  Setup exchanges and your local currency", .left, 16, .medium, .white))
+        getStackView().addArrangedSubview(UIView(15))
         getStackView().addArrangedSubview(UILabel( "  Connected Exchanges", .left, 16, .medium, .mediumSeaGreenColor))
         getStackView().addArrangedSubview(UIView(10))
         getStackView().addArrangedSubview(exchangeTableView)
@@ -32,6 +35,16 @@ class SettingViewController: BaseScrollViewController {
         
         registerNotifications()
         reloadData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if fetchConnectedExchanges().count == 0 { navigationController?.setNavigationBarHidden(true, animated: animated) }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     private func reloadData() {
