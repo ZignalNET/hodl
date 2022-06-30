@@ -49,11 +49,13 @@ Currently, its supports the following exchanges
           <li>AUD</li>
         </ul>
       </td>
-      <td><img src="https://user-images.githubusercontent.com/100917638/176646514-f9d0b976-2aad-4a20-8bfa-ee21284d3a10.png"></td>
-      <td><img src="https://user-images.githubusercontent.com/100917638/176646514-f9d0b976-2aad-4a20-8bfa-ee21284d3a10.png"></td>
+      <td><img src="https://user-images.githubusercontent.com/100917638/176658112-e8485af6-ef53-4a59-af1e-1fbb78603f18.png"></td>
+      <td><img src="https://user-images.githubusercontent.com/100917638/176658169-a96859c5-f0b5-498f-8911-546b6cb1fa59.png"></td>
       <td><img src="https://user-images.githubusercontent.com/100917638/176646514-f9d0b976-2aad-4a20-8bfa-ee21284d3a10.png"></td>
     </tr>
   </tbody>
 </table>
+
+
 
 
