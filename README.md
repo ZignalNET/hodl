@@ -72,7 +72,8 @@ Xcode 13.2, IOS 13.0
 
 # Costs
 ```
-FREE as in FREE speech. But if you have 100% remote contract jobs available for me, drop me an email emmanuel@zignal.net
+FREE as in FREE speech. 
+But if you have 100% remote contract jobs available for me, drop me an email emmanuel@zignal.net
 ```
 
 # License
