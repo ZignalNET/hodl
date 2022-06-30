@@ -70,6 +70,10 @@ Xcode 13.2, IOS 13.0
 * Add more exchanges
 * Add more local currencies. Thanks to min-api cryptocompare guys https://min-api.cryptocompare.com/
 
+# Costs
+```
+FREE as in FREE speech. But if you have 100% remote contract jobs available for me, drop me an email emmanuel@zignal.net
+```
 
 # License
 
